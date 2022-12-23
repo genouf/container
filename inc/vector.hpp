@@ -1,28 +1,26 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-#include <iostream>
-#include "vector_iterator.hpp"
+#include "random_access_iterator.hpp"
 
 namespace ft
 {
-	template <class T, class Allocator = std::allocator<T>>
+	template <class T, class Allocator = std::allocator<T> >
 	class vector
 	{
 		public: 
 
-
 		/*		MEMBER TYPES		*/
-		typedef T value_type;
-		typedef Allocator allocator_type;
-
-		typedef typename allocator_type::reference reference;
-		typedef typename allocator_type::const_reference const_reference;
-		typedef typename allocator_type::pointer pointer;
-		typedef typename allocator_type::const_pointer const_pointer;
-		typedef typename ft::vector_iterator iterator<T>;
-		typedef typename std::random_access_iterator_tag iterator_category;
-		typedef typename std::ptrdiff_t difference_type;
+		typedef T 												value_type;
+		typedef Allocator 										allocator_type;
+		typedef typename allocator_type::reference 				reference;
+		typedef typename allocator_type::const_reference 		const_reference;
+		typedef typename allocator_type::pointer 				pointer;
+		typedef typename allocator_type::const_pointer 			const_pointer;
+		typedef typename ft::random_access_iterator<T> 			iterator;
+		typedef typename ft::random_access_iterator<const T> 	const_iterator;
+		typedef std::ptrdiff_t 									difference_type;
+		typedef std::size_t 									size_type;
 
 		/*		CONSTRUCTORS		*/
 		/*	Empty container constructor	*/
@@ -31,9 +29,9 @@ namespace ft
 		/*	Fill constructor	*/
 		explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _size(n), _capacity(n), _al(alloc)
 		{
-			this->_container = al.allocate(_capacity);
-			for (int i = 0; i < _size; i++)
-				_container[i] = val;
+			this->_container = this->_al.allocate(_capacity);
+			for (int i = 0; i < this->_size; i++)
+				this->_container[i] = val;
 			return ;
 		}
 
@@ -47,30 +45,49 @@ namespace ft
 		/*	Copy constructor	*/
 		vector (const vector& x) : _size(x._size), _capacity(x._capacity), _al(x._al)
 		{
-			this->_container = _al.allocate(_capacity);
-			for (int i = 0; i < size; i++)
-				_container[i] = x._container[i];
+			this->_container = this->_al.allocate(_capacity);
+			for (int i = 0; i < this->_size; i++)
+				this->_container[i] = x._container[i];
 			return (*this);
 		}
 
 		/*	DESTRUCTOR	*/
 		virtual ~vector()
 		{
-			_al.deallocate(_container, _capacity);
+			this->_al.deallocate(this->_container, this->_capacity);
 			return ;
 		}
 
 		/*	OPERATORS	*/
-		vector& operator=(const vector& x)
+		reference operator=(const vector& x)
 		{
 			if (*this != x)
 			{
-				this->_container = _al.allocate(_capacity);
-				for (int i = 0; i < size; i++)
-					_container[i] = x._container[i];
+				this->_container = this->_al.allocate(this->_capacity);
+				for (int i = 0; i < this->_size; i++)
+					this->_container[i] = x._container[i];
 			}
 			return (*this);
 		}
+
+		reference operator[] (size_type n) { return (this->_container[n]); }
+
+		/*	FUNCTIONS	*/
+
+		/*	Iterators :	*/
+		iterator 		begin() { return (iterator(this->_container)); }
+		const_iterator	begin() const { return (this->_container); }
+
+		iterator		end() { return (this->_container + this->_size); }
+		const_iterator	end() const { return (this->_container + this->_size); }
+
+		/*	Capacity :	*/
+		size_type	size() const { return (this->_size); }
+
+		size_type	max_size() const { return (this->_al.max_size()); }
+
+		/*	Element access :	*/
+		// reference at(size_type n)
 
 		private:
 			value_type		_size;
