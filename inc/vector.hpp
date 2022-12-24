@@ -24,14 +24,14 @@ namespace ft
 
 		/*		CONSTRUCTORS		*/
 		/*	Empty container constructor	*/
-		explicit vector (const allocator_type& alloc = allocator_type()) : _size(0), _capacity(0), _container(NULL), _al(alloc) { return ; };
+		explicit vector (const allocator_type& alloc = allocator_type()) : _size(0), _capacity(0), _container(0), _al(alloc) { return ; };
 		
 		/*	Fill constructor	*/
 		explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _size(n), _capacity(n), _al(alloc)
 		{
 			this->_container = this->_al.allocate(_capacity);
-			for (int i = 0; i < this->_size; i++)
-				this->_container[i] = val;
+			for (size_type i = 0; i < this->_size; i++)
+				this->_al.construct(this->_container + i, val);
 			return ;
 		}
 
@@ -46,7 +46,7 @@ namespace ft
 		vector (const vector& x) : _size(x._size), _capacity(x._capacity), _al(x._al)
 		{
 			this->_container = this->_al.allocate(_capacity);
-			for (int i = 0; i < this->_size; i++)
+			for (size_type i = 0; i < this->_size; i++)
 				this->_container[i] = x._container[i];
 			return (*this);
 		}
@@ -61,8 +61,9 @@ namespace ft
 		/*	OPERATORS	*/
 		reference operator=(const vector& x)
 		{
-			if (*this != x)
+			if (this != &x)
 			{
+				this->_al.deallocate(this->_container, this->_capacity);
 				this->_container = this->_al.allocate(this->_capacity);
 				for (int i = 0; i < this->_size; i++)
 					this->_container[i] = x._container[i];
@@ -76,22 +77,32 @@ namespace ft
 
 		/*	Iterators :	*/
 		iterator 		begin() { return (iterator(this->_container)); }
-		const_iterator	begin() const { return (this->_container); }
+		const_iterator	begin() const { return (iterator(this->_container)); }
 
-		iterator		end() { return (this->_container + this->_size); }
-		const_iterator	end() const { return (this->_container + this->_size); }
+		iterator		end() { return (iterator(this->_container + this->_size)); }
+		const_iterator	end() const { return (iterator(this->_container + this->_size)); }
 
 		/*	Capacity :	*/
 		size_type	size() const { return (this->_size); }
 
 		size_type	max_size() const { return (this->_al.max_size()); }
 
+		// void	resize(size_type n, value_type val = value_type())
+		// {
+			
+		// 	return ;
+		// }
+
 		/*	Element access :	*/
 		// reference at(size_type n)
 
+		/*	Modifiers	*/
+
+
 		private:
-			value_type		_size;
-			value_type		_capacity;
+			/*	MEMBER VAR	*/
+			size_type		_size;
+			size_type		_capacity;
 			value_type 		*_container;
 			allocator_type	_al;
 	};

@@ -8,7 +8,7 @@ namespace ft
 	template <class T>
 	struct random_access_iterator 
 	{
-			typedef	random_access_iterator<T> iterator;
+			typedef	random_access_iterator iterator;
 
 			/*		MEMBER TYPES		*/
 			typedef typename std::random_access_iterator_tag	iterator_category;
@@ -17,33 +17,37 @@ namespace ft
 			typedef T*											pointer;
 			typedef	T&											reference;
 
-			/*	BASICS PROPERTIES	*/
+			/*	CONSTRUCTORS	*/
 			random_access_iterator(void) : _it(NULL) { return ; }
+
 			random_access_iterator(pointer src) : _it(src) { return ; }
+
 			iterator &operator=(iterator const &rhs)
 			{ 
-				this->_it = rhs;
+				this->_it = rhs._it;
 				return (*this);
 			}
+
+			/*	DESTRUCTOR	*/
 			virtual ~random_access_iterator() { return ; }
 
 			/*	DEREFERENCE	*/
 			reference operator*(void) const { return (*this->_it); }
-			pointer operator->(void) const { return (*this->_it); }
+			pointer operator->(void) const { return (this->_it); }
 
 			/*	PREFIX INCREMENT	*/
-			reference operator++(void) { this->_it++; return (*this); }
-			reference operator--(void) { this->_it--; return (*this); }
+			reference operator++(void) { this->_it++; return (*this->_it); }
+			reference operator--(void) { this->_it--; return (*this->_it); }
 
 			/*	POSTFIX INCREMENT	*/
-			iterator operator++(T) 
+			iterator operator++(int) 
 			{
 				iterator	tmp = *this;
 
 				++(*this);
 				return (tmp);
 			}
-			iterator operator--(T) 
+			iterator operator--(int) 
 			{
 				iterator	tmp = *this;
 
@@ -53,7 +57,7 @@ namespace ft
 
 			/*	COMPARISON	*/
 			bool operator==(iterator const &rhs) const { return (this->_it == rhs._it); }
-			bool operator!=(iterator const &rhs) const { return (this->it != rhs._it); }
+			bool operator!=(iterator const &rhs) const { return (this->_it != rhs._it); }
 			bool operator>(iterator const &rhs) const { return (this->_it > rhs._it); }
 			bool operator<(iterator const &rhs) const { return (this->_it < rhs._it); }
 			bool operator>=(iterator const &rhs) const { return (this->_it >= rhs._it); }
