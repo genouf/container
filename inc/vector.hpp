@@ -47,8 +47,7 @@ namespace ft
 		{
 			this->_container = this->_al.allocate(_capacity);
 			for (size_type i = 0; i < this->_size; i++)
-				this->_container[i] = x._container[i];
-			return (*this);
+				this->_al.construct(this->_container + i, x._container[i]);
 		}
 
 		/*	DESTRUCTOR	*/
@@ -63,10 +62,12 @@ namespace ft
 		{
 			if (this != &x)
 			{
+				for (size_type i = 0; i < this->_size; i--)
+					this->_al.destroy(this->_container + i);
 				this->_al.deallocate(this->_container, this->_capacity);
 				this->_container = this->_al.allocate(this->_capacity);
-				for (int i = 0; i < this->_size; i++)
-					this->_container[i] = x._container[i];
+				for (size_type i = 0; i < this->_size; i++)
+					this->_al.construct(this->_container + i, x._container[i]);
 			}
 			return (*this);
 		}

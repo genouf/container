@@ -14,13 +14,25 @@
 int	main(void)
 {
 	std::cout << "====== VECTEUR ======" << std::endl;
-	std::string for_test("Gabriel");
-	std::vector<std::string> v(6, for_test);
+	std::string string1("Gabriel");
+	std::vector<std::string> v(6, string1);
 	for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
 		std::cout << *it << std::endl;
 	std::cout << "====== MON VECTEUR ======" << std::endl;
-	ft::vector<std::string> my_v(6, for_test);
+	ft::vector<std::string> my_v(6, string1);
 	for (ft::vector<std::string>::iterator it = my_v.begin(); it != my_v.end(); it++)
+		std::cout << *it << std::endl;
+	std::cout << "====== MON VECTEUR COPIE ======" << std::endl;
+	ft::vector<std::string> my_v2(my_v);
+	for (ft::vector<std::string>::iterator it = my_v2.begin(); it != my_v2.end(); it++)
+		std::cout << *it << std::endl;
+	std::cout << "====== MON VECTEUR ASSIGNATION ======" << std::endl;
+	std::string string2("Mathilde");
+	ft::vector<std::string> my_v3(6, string2);
+	for (ft::vector<std::string>::iterator it = my_v3.begin(); it != my_v3.end(); it++)
+		std::cout << *it << std::endl;
+	my_v2 = my_v3;
+	for (ft::vector<std::string>::iterator it = my_v2.begin(); it != my_v2.end(); it++)
 		std::cout << *it << std::endl;
 	// ft::vector<int>::iterator my_it1;
 	// ft::vector<int>::iterator my_it2;
