@@ -59,14 +59,16 @@ int	main(void)
 	}
 
 	{
-		/*	ELEMENTS ACCESS TESTS	*/
-		std::vector<std::string>	v_string;
+		/*	MODIFIERS TESTS	*/
+		ft::vector<std::string>	v_string;
 		v_string.push_back("Gabriel");
 		v_string.push_back("Mathilde");
-		v_string.reserve(12);
-		v_string.shrink_to_fit();
+		std::cout << v_string.capacity() << std::endl;
+		for (ft::vector<std::string>::iterator it = v_string.begin(); it != v_string.end(); it++)
+			std::cout << *it << std::endl;
+		// v_string.reserve(12);
 		// try {
-			v_string.at(1);
+		// std::cout << v_string.at(1) << std::endl;
 		// }
 		// catch (const std::exception& e)
 		// {

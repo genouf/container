@@ -139,10 +139,43 @@ namespace ft
 		}
 
 		/*	Element access :	*/
-		// reference at(size_type n)
+		reference at(size_type n)
+		{
+			if (n > this->_size - 1)
+				throw std::out_of_range();
+			return (*(this->_container + n));
+		}
 
 		/*	Modifiers	*/
 
+
+		void	push_back(const value_type& val)
+		{
+			if (this->_size == this->_capacity)
+			{
+				if (this->_capacity == 0)
+					reserve(1);
+				else
+					reserve(this->_capacity * 2);
+			}
+			this->_al.construct(this->_container + this->_size, val);
+			this->_size++;
+			return ;
+		}
+
+		void	pop_back()
+		{
+			this->_al.destroy(this->_container + this->_size - 1);
+			this->_size--;
+		}
+
+		void	clear()
+		{
+			for (size_type i = 0; i < this->_size; i++)
+				this->_al.destroy(this->_container + i);
+			this->_size = 0;
+			return ;
+		}
 
 		private:
 			/*	MEMBER VAR	*/
