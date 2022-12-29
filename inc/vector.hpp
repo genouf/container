@@ -138,25 +138,6 @@ namespace ft
 			return ;
 		}
 
-		void	shrink_to_fit()
-		{
-			value_type	*tmp;
-
-			if (this->_capacity > this->_size)
-			{
-				tmp = this->_al.allocate(this->_size);
-				for (size_type i = 0; i < this->_size; i++)
-					this->_al.construct(tmp + i, this->_container[i]);
-				for (size_type i = 0; i < this->_size; i++)
-					this->_al.destroy(this->_container + i);
-				if (this->_container)
-					this->_al.deallocate(this->_container, this->_capacity);
-				this->_container = tmp;
-				this->_capacity = this->_size;
-			}
-			return ;
-		}
-
 		/*	Element access :	*/
 		// reference at(size_type n)
 

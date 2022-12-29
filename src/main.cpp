@@ -14,6 +14,7 @@
 int	main(void)
 {
 	{
+		/*	MANDATORY TESTS	*/
 		std::cout << "====== VECTEUR ======" << std::endl;
 		std::string string1("Gabriel");
 		std::vector<std::string> v(2, string1);
@@ -40,6 +41,7 @@ int	main(void)
 	}
 
 	{
+		/*	CAPACITY TESTS	*/
 		std::cout << "BEFORE RESIZE" << std::endl;
 		ft::vector<std::string> my_v(2, "Allez");
 		for (ft::vector<std::string>::iterator it = my_v.begin(); it != my_v.end(); it++)
@@ -54,8 +56,22 @@ int	main(void)
 		std::cout << "EMPTY V : " << empty_v.empty() << std::endl;
 		my_v.reserve(12);
 		std::cout << "CAPACITY AFTER RESERVE : " << my_v.capacity() << std::endl;
-		my_v.shrink_to_fit();
-		std::cout << "CAPACITY AFTER SHRINK : " << my_v.capacity() << std::endl;
+	}
+
+	{
+		/*	ELEMENTS ACCESS TESTS	*/
+		std::vector<std::string>	v_string;
+		v_string.push_back("Gabriel");
+		v_string.push_back("Mathilde");
+		v_string.reserve(12);
+		v_string.shrink_to_fit();
+		// try {
+			v_string.at(1);
+		// }
+		// catch (const std::exception& e)
+		// {
+		// 	std::cout << "ERREUR" << std::endl;
+		// }
 	}
 	return (0);
 }
