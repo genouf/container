@@ -148,6 +148,35 @@ namespace ft
 
 		/*	Modifiers	*/
 
+		// range version
+		template <class InputIterator>
+		void	assign(InputIterator first, InputIterator last)
+		{
+			const size_type	range = distance(first, last);
+			size_type		i = 0;
+
+			this->clear();
+			if (range > this->_capacity)
+				reserve(range);
+			for (InputIterator tmp = first; tmp != last; tmp++)
+			{
+				this->_al.construct(this->_container + i, *tmp);
+				i++;
+			}
+			this->_size = range;
+			return ;
+		}
+
+		void	assign(size_type n, const value_type& val)
+		{
+			this->clear();
+			if (n > this->_capacity)
+				reserve(n);
+			for (size_type i = 0; i < n; i++)
+				this->_al.construct(this->_container + i, val);
+			this->_size = n;
+			return ;
+		}
 
 		void	push_back(const value_type& val)
 		{
@@ -183,6 +212,16 @@ namespace ft
 			size_type		_capacity;
 			value_type 		*_container;
 			allocator_type	_al;
+
+			template <class InputIterator>
+			size_type	distance(InputIterator first, InputIterator last)
+			{
+				size_type	i = 0;
+
+				for (InputIterator tmp = first; tmp != last; tmp++)
+					i++;
+				return (i);
+			}
 	};
 }
 

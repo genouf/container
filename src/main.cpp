@@ -4,12 +4,12 @@
 
 #include "../inc/vector.hpp"
 
-// class Test
-// {
-// 	public:
-// 		Test() {};
-// 		~Test() {};
-// };
+template <class T>
+void	print_vector(ft::vector<T> & v)
+{
+	for (typename ft::vector<T>::iterator it = v.begin(); it != v.end(); it++)
+		std::cout << *it << std::endl;
+}
 
 int	main(void)
 {
@@ -22,20 +22,16 @@ int	main(void)
 			std::cout << *it << std::endl;
 		std::cout << "====== MON VECTEUR ======" << std::endl;
 		ft::vector<std::string> my_v(2, string1);
-		for (ft::vector<std::string>::iterator it = my_v.begin(); it != my_v.end(); it++)
-			std::cout << *it << std::endl;
+		print_vector(my_v);
 		std::cout << "====== MON VECTEUR COPIE ======" << std::endl;
 		ft::vector<std::string> my_v2(my_v);
-		for (ft::vector<std::string>::iterator it = my_v2.begin(); it != my_v2.end(); it++)
-			std::cout << *it << std::endl;
+		print_vector(my_v2);
 		std::cout << "====== MON VECTEUR ASSIGNATION ======" << std::endl;
 		std::string string2("Mathilde");
 		ft::vector<std::string> my_v3(2, string2);
-		for (ft::vector<std::string>::iterator it = my_v3.begin(); it != my_v3.end(); it++)
-			std::cout << *it << std::endl;
+		print_vector(my_v3);
 		my_v2 = my_v3;
-		for (ft::vector<std::string>::iterator it = my_v2.begin(); it != my_v2.end(); it++)
-			std::cout << *it << std::endl;
+		print_vector(my_v2);
 		std::cout << "====== ACCESS OPERATOR ======" << std::endl;
 		std::cout << my_v2[0] << std::endl;
 	}
@@ -44,12 +40,10 @@ int	main(void)
 		/*	CAPACITY TESTS	*/
 		std::cout << "BEFORE RESIZE" << std::endl;
 		ft::vector<std::string> my_v(2, "Allez");
-		for (ft::vector<std::string>::iterator it = my_v.begin(); it != my_v.end(); it++)
-			std::cout << *it << std::endl;
+		print_vector(my_v);
 		my_v.resize(6, "Kiks");
 		std::cout << "AFTER RESIZE" << std::endl;
-		for (ft::vector<std::string>::iterator it = my_v.begin(); it != my_v.end(); it++)
-			std::cout << *it << std::endl;
+		print_vector(my_v);
 		std::cout << "CAPACITY : " << my_v.capacity() << std::endl;
 		std::cout << "EMPTY ? : " << my_v.empty() << std::endl;
 		ft::vector<std::string> empty_v;
@@ -63,17 +57,17 @@ int	main(void)
 		ft::vector<std::string>	v_string;
 		v_string.push_back("Gabriel");
 		v_string.push_back("Mathilde");
+		v_string.push_back("Allez");
+		v_string.push_back("les");
+		v_string.push_back("bleus");
 		std::cout << v_string.capacity() << std::endl;
-		for (ft::vector<std::string>::iterator it = v_string.begin(); it != v_string.end(); it++)
-			std::cout << *it << std::endl;
-		// v_string.reserve(12);
-		// try {
-		// std::cout << v_string.at(1) << std::endl;
-		// }
-		// catch (const std::exception& e)
-		// {
-		// 	std::cout << "ERREUR" << std::endl;
-		// }
+		print_vector(v_string);
+		std::cout << std::endl << "ASSIGN TEST" << std::endl;
+		ft::vector<std::string> n_v(12, "bleus");
+		n_v.assign(v_string.begin(), v_string.begin() + 3);
+		n_v.assign(10, "allez");
+		std::cout << "CAPACITY : " << n_v.capacity() << std::endl;
+		print_vector(n_v);
 	}
 	return (0);
 }
