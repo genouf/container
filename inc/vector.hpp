@@ -53,19 +53,28 @@ namespace ft
 		/*	DESTRUCTOR	*/
 		virtual ~vector()
 		{
-			this->_al.deallocate(this->_container, this->_capacity);
+			for (size_type i = 0; i < this->_size; i--)
+				this->_al.destroy(this->_container + i);
+			if (this->_container)
+				this->_al.deallocate(this->_container, this->_capacity);
 			return ;
 		}
 
 		/*	OPERATORS	*/
-		reference operator=(const vector& x)
+		vector& operator=(const vector& x)
 		{
 			if (this != &x)
 			{
 				for (size_type i = 0; i < this->_size; i--)
 					this->_al.destroy(this->_container + i);
-				this->_al.deallocate(this->_container, this->_capacity);
-				this->_container = this->_al.allocate(this->_capacity);
+				if (this->_capacity < x._capacity)
+				{
+					if (this->_container)
+						this->_al.deallocate(this->_container, this->_capacity);
+					this->_capacity = x._capacity;
+					this->_container = this->_al.allocate(this->_capacity);
+				}
+				this->_size = x._size;
 				for (size_type i = 0; i < this->_size; i++)
 					this->_al.construct(this->_container + i, x._container[i]);
 			}
@@ -88,11 +97,65 @@ namespace ft
 
 		size_type	max_size() const { return (this->_al.max_size()); }
 
-		// void	resize(size_type n, value_type val = value_type())
-		// {
-			
-		// 	return ;
-		// }
+		void	resize(size_type n, value_type val = value_type())
+		{
+			if (n < this->_size)
+			{
+				for (size_type i = this->_size - 1; i < n; i++)
+					this->_al.destroy(this->_container + i);
+				this->_size = n;
+			}
+			if (n > this->_size)
+			{
+				reserve(n);
+				for (size_type i = this->_size; i < n; i++)
+					this->_al.construct(this->_container + i, val);
+				this->_size = n;
+			}
+			return ;
+		}
+
+		size_type	capacity() const { return (this->_capacity); }
+
+		bool	empty() const { return ((this->_size) ? false : true); }
+
+		void	reserve (size_type n)
+		{
+			value_type	*tmp;
+
+			if (n > this->_capacity)
+			{
+				tmp = this->_al.allocate(n);
+				for (size_type i = 0; i < this->_size; i++)
+					this->_al.construct(tmp + i, this->_container[i]);
+				for (size_type i = 0; i < this->_size; i++)
+					this->_al.destroy(this->_container + i);
+				if (this->_container)
+					this->_al.deallocate(this->_container, this->_capacity);
+				this->_container = tmp;
+				this->_capacity = n;
+			}
+			return ;
+		}
+
+		void	shrink_to_fit()
+		{
+			value_type	*tmp;
+
+			if (this->_capacity > this->_size)
+			{
+				tmp = this->_al.allocate(this->_size);
+				for (size_type i = 0; i < this->_size; i++)
+					this->_al.construct(tmp + i, this->_container[i]);
+				for (size_type i = 0; i < this->_size; i++)
+					this->_al.destroy(this->_container + i);
+				if (this->_container)
+					this->_al.deallocate(this->_container, this->_capacity);
+				this->_container = tmp;
+				this->_capacity = this->_size;
+			}
+			return ;
+		}
 
 		/*	Element access :	*/
 		// reference at(size_type n)
