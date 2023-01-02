@@ -65,9 +65,22 @@ int	main(void)
 		std::cout << std::endl << "ASSIGN TEST" << std::endl;
 		ft::vector<std::string> n_v(12, "bleus");
 		n_v.assign(v_string.begin(), v_string.begin() + 3);
-		n_v.assign(10, "allez");
-		std::cout << "CAPACITY : " << n_v.capacity() << std::endl;
 		print_vector(n_v);
+		n_v.assign(10, "allez");
+		print_vector(n_v);
+		std::cout << "CAPACITY : " << n_v.capacity() << std::endl;
+		std::cout << std::endl << std::endl;
+
+		std::vector<int> v6(4, 6);
+		// std::cout << *(v6.insert(v6.begin() + 2, 6, "l"));
+		v6.insert(v6.begin() + 2, 12, 1);
+		for (std::vector<int>::iterator it = v6.begin(); it != v6.end(); it++)
+			std::cout << *it << std::endl;
+		std::cout << "====== VS ======" << std::endl;
+		ft::vector<int>	my_v6(4, 6);
+		// std::cout << *(my_v6.insert(my_v6.begin() + 2, 6, "l"));
+		my_v6.insert(my_v6.begin() + 2, 12, 1);
+		print_vector(my_v6);
 	}
 	return (0);
 }

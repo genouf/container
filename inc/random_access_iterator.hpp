@@ -90,7 +90,10 @@ namespace ft
 			friend iterator operator-(int n, iterator it) { return (it -= n); }
 
 			/*	DEREFERENCE OPERATOR	*/
-			reference operator[](unsigned int n) { return (this->_it[n]); }
+			iterator operator[](unsigned int n) { return (this->_it[n]); }
+
+			/*	DISTANCE OPERATOR	*/
+			difference_type	operator-(iterator const &other) const { return (this->_it - other._it); }
 
 		private:
 			/*	MEMBER VAR	*/

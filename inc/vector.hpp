@@ -142,7 +142,7 @@ namespace ft
 		reference at(size_type n)
 		{
 			if (n > this->_size - 1)
-				throw std::out_of_range();
+				throw std::out_of_range("vector out of range");
 			return (*(this->_container + n));
 		}
 
@@ -152,7 +152,7 @@ namespace ft
 		template <class InputIterator>
 		void	assign(InputIterator first, InputIterator last)
 		{
-			const size_type	range = distance(first, last);
+			const size_type	range = last - first;
 			size_type		i = 0;
 
 			this->clear();
@@ -167,6 +167,7 @@ namespace ft
 			return ;
 		}
 
+		// fill version
 		void	assign(size_type n, const value_type& val)
 		{
 			this->clear();
@@ -198,6 +199,86 @@ namespace ft
 			this->_size--;
 		}
 
+		// single element version
+		iterator	insert(iterator position, const value_type& val)
+		{
+			size_type	index = position - this->begin();
+
+			if (this->_size == this->_capacity)
+				reserve(this->_capacity * 2);
+			this->_size++;
+			for (size_type i = this->_size - 1; i != index; i--)
+			{
+				if (i != this->_size - 1)
+					this->_al.destroy(this->_container + i);
+				this->_al.construct(this->_container + i, this->_container[i - 1]);
+			}
+			this->_al.destroy(this->_container + index);
+			this->_al.construct(this->_container + index, val);
+			return (iterator(this->_container + index));
+		}
+
+		// fill version
+		void	insert(iterator position, size_type n, const value_type& val)
+		{
+			size_type	index = position - this->begin();
+			size_type tmp = this->_capacity;
+
+			if (this->_size + n > this->_capacity)
+			{
+				if (tmp == 0)
+					tmp = 1;
+				while (this->_size + n > tmp)
+					tmp *= 2;
+				reserve(tmp);
+			}
+ 			this->_size += n;
+			for (size_type i = this->_size - 1; i != index + n - 1; i--)
+			{
+				if (!(i > index) && !(i < index + n - 1))
+					this->_al.destroy(this->_container + i);
+				this->_al.construct(this->_container + i, this->_container[i - n]);
+			}
+			for (size_type i = index + n - 1; i != (index + n - 1) - n; i--)
+			{
+				this->_al.destroy(this->_container + i);
+				this->_al.construct(this->_container + i, val);
+			}
+			return ;
+		}
+
+		// range version
+		template <class InputIterator>
+		void	insert(iterator position, InputIterator first, InputIterator last)
+		{
+			size_type	size = last - first;
+			size_type	index = position - this->begin();
+			size_type	tmp = this->_capacity;
+
+			if (this->_size + size > this->_capacity)
+			{
+				if (tmp == 0)
+					tmp = 1;
+				while (this->_size + size > tmp)
+					tmp *= 2;
+				reserve(tmp);
+			}
+			this->_size += size;
+			for (size_type i = this->_size - 1; i != index + size - 1; i--)
+			{
+				if (!(i > index) && !(i < index + size - 1))
+					this->_al.destroy(this->_container + i);
+				this->_al.construct(this->_container + i, this->_container[i - size]);
+			}
+			for (size_type i = index + size - 1; i != (index + size - 1) - size; i--)
+			{
+				this->_al.destroy(this->_container + i);
+				this->_al.construct(this->_container + i, *last);
+				last--;
+			}
+			return ;
+		}
+
 		void	clear()
 		{
 			for (size_type i = 0; i < this->_size; i++)
@@ -213,15 +294,6 @@ namespace ft
 			value_type 		*_container;
 			allocator_type	_al;
 
-			template <class InputIterator>
-			size_type	distance(InputIterator first, InputIterator last)
-			{
-				size_type	i = 0;
-
-				for (InputIterator tmp = first; tmp != last; tmp++)
-					i++;
-				return (i);
-			}
 	};
 }
 
