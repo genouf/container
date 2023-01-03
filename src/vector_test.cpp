@@ -3,6 +3,7 @@
 #include <bits/stdc++.h>
 
 #include "../inc/vector.hpp"
+#include "../inc/utility.hpp"
 
 template <class T>
 void	print_vector(ft::vector<T> & v)
@@ -82,6 +83,7 @@ int	main(void)
 		my_v6.insert(my_v6.begin() + 2, 12, 1);
 		print_vector(my_v6);
 	}
+
 	return (0);
 }
 
