@@ -2,6 +2,7 @@
 # define VECTOR_HPP
 
 #include "random_access_iterator.hpp"
+#include "utility.hpp"
 
 namespace ft
 {
@@ -248,36 +249,37 @@ namespace ft
 		}
 
 		// range version
-		// template <class InputIterator>
-		// void	insert(iterator position, InputIterator first, InputIterator last)
-		// {
-		// 	size_type	size = last - first;
-		// 	size_type	index = position - this->begin();
-		// 	size_type	tmp = this->_capacity;
+		template <class InputIterator>
+		void	insert(iterator position, InputIterator first, InputIterator last)
+		{
+			size_type	size = last - first;
+			size_type	index = position - this->begin();
+			size_type	tmp = this->_capacity;
 
-		// 	if (this->_size + size > this->_capacity)
-		// 	{
-		// 		if (tmp == 0)
-		// 			tmp = 1;
-		// 		while (this->_size + size > tmp)
-		// 			tmp *= 2;
-		// 		reserve(tmp);
-		// 	}
-		// 	this->_size += size;
-		// 	for (size_type i = this->_size - 1; i != index + size - 1; i--)
-		// 	{
-		// 		if (!(i > index) && !(i < index + size - 1))
-		// 			this->_al.destroy(this->_container + i);
-		// 		this->_al.construct(this->_container + i, this->_container[i - size]);
-		// 	}
-		// 	for (size_type i = index + size - 1; i != (index + size - 1) - size; i--)
-		// 	{
-		// 		this->_al.destroy(this->_container + i);
-		// 		this->_al.construct(this->_container + i, *last);
-		// 		last--;
-		// 	}
-		// 	return ;
-		// }
+			if (this->_size + size > this->_capacity)
+			{
+				if (tmp == 0)
+					tmp = 1;
+				while (this->_size + size > tmp)
+					tmp *= 2;
+				reserve(tmp);
+			}
+			this->_size += size;
+			for (size_type i = this->_size - 1; i != index + size - 1; i--)
+			{
+				if (!(i > index) && !(i < index + size - 1))
+					this->_al.destroy(this->_container + i);
+				this->_al.construct(this->_container + i, this->_container[i - size]);
+			}
+			last--;
+			for (size_type i = index + size - 1; i != (index + size - 1) - size; i--)
+			{
+				this->_al.destroy(this->_container + i);
+				this->_al.construct(this->_container + i, *last);
+				last--;
+			}
+			return ;
+		}
 
 		void	clear()
 		{

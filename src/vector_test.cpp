@@ -16,71 +16,72 @@ int	main(void)
 {
 	{
 		/*	MANDATORY TESTS	*/
-		std::cout << "====== VECTEUR ======" << std::endl;
-		std::string string1("Gabriel");
-		std::vector<std::string> v(2, string1);
-		for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
-			std::cout << *it << std::endl;
-		std::cout << "====== MON VECTEUR ======" << std::endl;
-		ft::vector<std::string> my_v(2, string1);
-		print_vector(my_v);
-		std::cout << "====== MON VECTEUR COPIE ======" << std::endl;
-		ft::vector<std::string> my_v2(my_v);
-		print_vector(my_v2);
-		std::cout << "====== MON VECTEUR ASSIGNATION ======" << std::endl;
-		std::string string2("Mathilde");
-		ft::vector<std::string> my_v3(2, string2);
-		print_vector(my_v3);
-		my_v2 = my_v3;
-		print_vector(my_v2);
-		std::cout << "====== ACCESS OPERATOR ======" << std::endl;
-		std::cout << my_v2[0] << std::endl;
+		// std::cout << "====== VECTEUR ======" << std::endl;
+		// std::string string1("Gabriel");
+		// std::vector<std::string> v(2, string1);
+		// for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
+		// 	std::cout << *it << std::endl;
+		// std::cout << "====== MON VECTEUR ======" << std::endl;
+		// ft::vector<std::string> my_v(2, string1);
+		// print_vector(my_v);
+		// std::cout << "====== MON VECTEUR COPIE ======" << std::endl;
+		// ft::vector<std::string> my_v2(my_v);
+		// print_vector(my_v2);
+		// std::cout << "====== MON VECTEUR ASSIGNATION ======" << std::endl;
+		// std::string string2("Mathilde");
+		// ft::vector<std::string> my_v3(2, string2);
+		// print_vector(my_v3);
+		// my_v2 = my_v3;
+		// print_vector(my_v2);
+		// std::cout << "====== ACCESS OPERATOR ======" << std::endl;
+		// std::cout << my_v2[0] << std::endl;
 	}
 
 	{
-		/*	CAPACITY TESTS	*/
-		std::cout << "BEFORE RESIZE" << std::endl;
-		ft::vector<std::string> my_v(2, "Allez");
-		print_vector(my_v);
-		my_v.resize(6, "Kiks");
-		std::cout << "AFTER RESIZE" << std::endl;
-		print_vector(my_v);
-		std::cout << "CAPACITY : " << my_v.capacity() << std::endl;
-		std::cout << "EMPTY ? : " << my_v.empty() << std::endl;
-		ft::vector<std::string> empty_v;
-		std::cout << "EMPTY V : " << empty_v.empty() << std::endl;
-		my_v.reserve(12);
-		std::cout << "CAPACITY AFTER RESERVE : " << my_v.capacity() << std::endl;
+		// /*	CAPACITY TESTS	*/
+		// std::cout << "BEFORE RESIZE" << std::endl;
+		// ft::vector<std::string> my_v(2, "Allez");
+		// print_vector(my_v);
+		// my_v.resize(6, "Kiks");
+		// std::cout << "AFTER RESIZE" << std::endl;
+		// print_vector(my_v);
+		// std::cout << "CAPACITY : " << my_v.capacity() << std::endl;
+		// std::cout << "EMPTY ? : " << my_v.empty() << std::endl;
+		// ft::vector<std::string> empty_v;
+		// std::cout << "EMPTY V : " << empty_v.empty() << std::endl;
+		// my_v.reserve(12);
+		// std::cout << "CAPACITY AFTER RESERVE : " << my_v.capacity() << std::endl;
 	}
 
 	{
 		/*	MODIFIERS TESTS	*/
-		ft::vector<std::string>	v_string;
-		v_string.push_back("Gabriel");
-		v_string.push_back("Mathilde");
-		v_string.push_back("Allez");
-		v_string.push_back("les");
-		v_string.push_back("bleus");
-		std::cout << v_string.capacity() << std::endl;
-		print_vector(v_string);
-		std::cout << std::endl << "ASSIGN TEST" << std::endl;
-		ft::vector<std::string> n_v(12, "bleus");
-		n_v.assign(v_string.begin(), v_string.begin() + 3);
-		print_vector(n_v);
-		n_v.assign(10, "allez");
-		print_vector(n_v);
-		std::cout << "CAPACITY : " << n_v.capacity() << std::endl;
-		std::cout << std::endl << std::endl;
+		// ft::vector<std::string>	v_string;
+		// v_string.push_back("Gabriel");
+		// v_string.push_back("Mathilde");
+		// v_string.push_back("Allez");
+		// v_string.push_back("les");
+		// v_string.push_back("bleus");
+		// std::cout << v_string.capacity() << std::endl;
+		// print_vector(v_string);
+		// std::cout << std::endl << "ASSIGN TEST" << std::endl;
+		// ft::vector<std::string> n_v(12, "bleus");
+		// n_v.assign(v_string.begin(), v_string.begin() + 3);
+		// print_vector(n_v);
+		// n_v.assign(10, "allez");
+		// print_vector(n_v);
+		// std::cout << "CAPACITY : " << n_v.capacity() << std::endl;
+		// std::cout << std::endl << std::endl;
 
-		std::vector<int> v6(4, 6);
-		// std::cout << *(v6.insert(v6.begin() + 2, 6, "l"));
-		v6.insert(v6.begin() + 2, 12, 1);
-		for (std::vector<int>::iterator it = v6.begin(); it != v6.end(); it++)
-			std::cout << *it << std::endl;
-		std::cout << "====== VS ======" << std::endl;
+		// std::vector<int> v6(4, 6);
+		// // std::cout << *(v6.insert(v6.begin() + 2, 6, "l"));
+		// v6.insert(v6.begin() + 2, 12, 1);
+		// for (std::vector<int>::iterator it = v6.begin(); it != v6.end(); it++)
+		// 	std::cout << *it << std::endl;
+		// std::cout << "====== VS ======" << std::endl;
 		ft::vector<int>	my_v6(4, 6);
+		ft::vector<int>	my_v12(4, 12);
 		// std::cout << *(my_v6.insert(my_v6.begin() + 2, 6, "l"));
-		my_v6.insert(my_v6.begin() + 2, 12, 1);
+		my_v6.insert(my_v6.end(), my_v12.begin(), my_v12.end());
 		print_vector(my_v6);
 	}
 
