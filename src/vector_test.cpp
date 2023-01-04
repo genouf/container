@@ -80,8 +80,13 @@ int	main(void)
 		// std::cout << "====== VS ======" << std::endl;
 		ft::vector<int>	my_v6(4, 6);
 		ft::vector<int>	my_v12(4, 12);
-		// std::cout << *(my_v6.insert(my_v6.begin() + 2, 6, "l"));
 		my_v6.insert(my_v6.end(), my_v12.begin(), my_v12.end());
+		print_vector(my_v6);
+		std::cout << std::endl << std::endl;
+		my_v6.erase(my_v6.end());
+		print_vector(my_v6);
+		std::cout << std::endl << std::endl;
+		my_v6.erase(my_v6.begin(), my_v6.end());
 		print_vector(my_v6);
 	}
 

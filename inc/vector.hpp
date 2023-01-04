@@ -281,6 +281,36 @@ namespace ft
 			return ;
 		}
 
+		// single element version
+		iterator	erase(iterator position)
+		{
+			size_type	index = position - this->begin();
+
+			for (size_type i = index; i < this->_size - 1; i++)
+			{
+				this->_al.destroy(this->_container + i);
+				this->_al.construct(this->_container + i, this->_container[i + 1]);
+			}
+			this->_size--;
+			return (iterator(this->_container + index));
+		}
+
+		// range version
+		iterator	erase(iterator first, iterator last)
+		{
+			size_type	index = first - this->begin();
+			size_type	size = last - first;
+			
+			for (size_type i = index; i < index + size; i++)
+			{
+				this->_al.destroy(this->_container + i);
+				if (i + size < this->_size)
+					this->_al.construct(this->_container + i, this->_container[i + size]);
+			}
+			this->_size -= size;
+			return (iterator(this->_container + index));
+		}
+
 		void	clear()
 		{
 			for (size_type i = 0; i < this->_size; i++)
