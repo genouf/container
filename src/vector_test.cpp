@@ -78,16 +78,37 @@ int	main(void)
 		// for (std::vector<int>::iterator it = v6.begin(); it != v6.end(); it++)
 		// 	std::cout << *it << std::endl;
 		// std::cout << "====== VS ======" << std::endl;
-		ft::vector<int>	my_v6(4, 6);
-		ft::vector<int>	my_v12(4, 12);
-		my_v6.insert(my_v6.end(), my_v12.begin(), my_v12.end());
-		print_vector(my_v6);
-		std::cout << std::endl << std::endl;
-		my_v6.erase(my_v6.end());
-		print_vector(my_v6);
-		std::cout << std::endl << std::endl;
-		my_v6.erase(my_v6.begin(), my_v6.end());
-		print_vector(my_v6);
+		// std::vector<int> v6(4, 6);
+		// ft::vector<int>	my_v6(4, 6);
+		// std::vector<int> v12(4, 12);
+		// ft::vector<int>	my_v12(4, 12);
+		// my_v6.insert(my_v6.end(), my_v12.begin(), my_v12.end());
+		// v6.insert(v6.end(), v12.begin(), v12.end());
+		// print_vector(my_v6);
+		// for (std::vector<int>::iterator it = v6.begin(); it != v6.end(); it++)
+			// std::cout << *it << std::endl;
+		// std::cout << std::endl << std::endl;
+		ft::vector<std::string> coucou(1, "coucou");
+		coucou.push_back("test");
+		std::cout << "coucou begin " << *(coucou.begin()) << std::endl;
+		std::cout << "coucou end " << *(coucou.end() - 1) << std::endl;
+		// coucou.erase(coucou.begin());
+		// print_vector(coucou);
+		// std::cout << "CAPACITY " << my_v6.capacity() << std::endl;
+		// my_v6.erase(my_v6.begin());
+		// v6.erase(v6.end());
+		// print_vector(my_v6);
+		// for (std::vector<int>::iterator it = v6.begin(); it != v6.end(); it++)
+			// std::cout << *it << std::endl;
+		// std::cout << std::endl << std::endl;
+		// my_v6.erase(my_v6.begin(), my_v6.end());
+		// v6.erase(v6.begin(), v6.end());
+		// print_vector(my_v6);
+		// for (std::vector<int>::iterator it = v6.begin(); it != v6.end(); it++)
+			// std::cout << *it << std::endl;
+		// std::cout << "before " << *(my_v6.begin() + 4)-- << std::endl;
+		// std::cout << "before " << *(v6.begin() + 4)-- << std::endl;
+		// std::cout << "before " << *(v6.begin() + 4) << std::endl;
 	}
 
 	return (0);

@@ -285,13 +285,23 @@ namespace ft
 		iterator	erase(iterator position)
 		{
 			size_type	index = position - this->begin();
-
-			for (size_type i = index; i < this->_size - 1; i++)
+			size_type	i = index;
+			
+			std::cout << "index is " << index << std::endl;
+			this->_al.destroy(this->_container + i);
+			// this->_size--;
+			if (i + 1 < this->_size)
+			{
+				this->_al.construct(this->_container + i, this->_container[i + 1]);
+				i++;
+			}
+			for ( ; i < this->_size - 1; i++)
 			{
 				this->_al.destroy(this->_container + i);
 				this->_al.construct(this->_container + i, this->_container[i + 1]);
 			}
-			this->_size--;
+			if (i != index)
+				this->_size--;
 			return (iterator(this->_container + index));
 		}
 
@@ -306,8 +316,8 @@ namespace ft
 				this->_al.destroy(this->_container + i);
 				if (i + size < this->_size)
 					this->_al.construct(this->_container + i, this->_container[i + size]);
+				this->_size--;
 			}
-			this->_size -= size;
 			return (iterator(this->_container + index));
 		}
 
