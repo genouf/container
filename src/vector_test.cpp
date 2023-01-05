@@ -6,7 +6,15 @@
 #include "../inc/utility.hpp"
 
 template <class T>
-void	print_vector(ft::vector<T> & v)
+void	print_vector(std::vector<T> & v)
+{
+	for (typename std::vector<T>::iterator it = v.begin(); it != v.end(); it++)
+		std::cout << *it << std::endl;
+}
+
+
+template <class T>
+void	print_mvector(ft::vector<T> & v)
 {
 	for (typename ft::vector<T>::iterator it = v.begin(); it != v.end(); it++)
 		std::cout << *it << std::endl;
@@ -88,10 +96,11 @@ int	main(void)
 		// for (std::vector<int>::iterator it = v6.begin(); it != v6.end(); it++)
 			// std::cout << *it << std::endl;
 		// std::cout << std::endl << std::endl;
-		ft::vector<std::string> coucou(1, "coucou");
-		coucou.push_back("test");
-		std::cout << "coucou begin " << *(coucou.begin()) << std::endl;
-		std::cout << "coucou end " << *(coucou.end() - 1) << std::endl;
+		// std::vector<std::string> coucou(1, "coucou");
+		// coucou.push_back("test");
+		// coucou.insert(coucou.begin(), coucou.begin(), coucou.end() + 2);
+		// std::cout << "coucou begin " << *(coucou.begin()) << std::endl;
+		// std::cout << "coucou end " << *(coucou.end() + 2) << std::endl;
 		// coucou.erase(coucou.begin());
 		// print_vector(coucou);
 		// std::cout << "CAPACITY " << my_v6.capacity() << std::endl;
@@ -109,6 +118,43 @@ int	main(void)
 		// std::cout << "before " << *(my_v6.begin() + 4)-- << std::endl;
 		// std::cout << "before " << *(v6.begin() + 4)-- << std::endl;
 		// std::cout << "before " << *(v6.begin() + 4) << std::endl;
+
+		// ft::vector<std::string> v1 (4, "allez");
+		// ft::vector<std::string> v2 (v1.begin(), v1.end());
+		// print_vector(v2);
+		// v2.erase(v2.end());
+		// std::cout << std::endl;
+
+		// ft::vector<std::string> v1;
+		// v1.push_back(" lol");
+		// v1.push_back("mdr");
+		// v1.push_back("xd");
+		// v1.push_back("mdr");
+		
+		
+		ft::vector<int> mv1;
+		mv1.push_back(0);
+		mv1.push_back(1);
+		mv1.push_back(2);
+		mv1.push_back(3);
+		mv1.push_back(4);
+		mv1.push_back(5);
+		mv1.push_back(6);
+		print_mvector(mv1);
+		mv1.erase(mv1.begin(), mv1.end());
+		print_mvector(mv1);
+		// std::vector<int> v1;
+		// v1.push_back(0);
+		// v1.push_back(1);
+		// v1.push_back(2);
+		// v1.push_back(3);
+		// v1.push_back(4);
+		// v1.push_back(5);
+		// v1.push_back(6);
+		// print_vector(v1);
+		// v1.erase(v1.begin(), v1.end() + 2);
+		// std::cout << std::endl;
+		// print_vector(v1);
 	}
 
 	return (0);

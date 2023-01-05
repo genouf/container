@@ -37,11 +37,18 @@ namespace ft
 		}
 
 		/*	Range constructor	*/
-		// template <class InputIterator>
-		// vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
-		// {
+		template <class InputIterator>
+		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename enable_if<!is_integral<InputIterator>::value>::type* = 0) : _size(0), _capacity(0), _container(0), _al(alloc)
+		{
+			size_type	 size = last - first;
 
-		// }
+			this->_size = size;
+			this->_capacity = this->_size;
+			this->_container = this->_al.allocate(this->_capacity);
+			for (size_type i = 0; i < this->_size; i++)
+				this->_al.construct(this->_container + i, *(first + i));
+			return ;
+		}
 
 		/*	Copy constructor	*/
 		vector (const vector& x) : _size(x._size), _capacity(x._capacity), _al(x._al)
@@ -282,26 +289,20 @@ namespace ft
 		}
 
 		// single element version
-		iterator	erase(iterator position)
+		iterator erase(iterator position)
 		{
 			size_type	index = position - this->begin();
-			size_type	i = index;
-			
-			std::cout << "index is " << index << std::endl;
-			this->_al.destroy(this->_container + i);
-			// this->_size--;
-			if (i + 1 < this->_size)
-			{
-				this->_al.construct(this->_container + i, this->_container[i + 1]);
-				i++;
-			}
-			for ( ; i < this->_size - 1; i++)
+
+			// std::cout << "index is " << index << std::endl;
+			if (this->_size == 0)
+				return (position);
+			for (size_type i = index; i < this->_size - 1; ++i)
 			{
 				this->_al.destroy(this->_container + i);
 				this->_al.construct(this->_container + i, this->_container[i + 1]);
 			}
-			if (i != index)
-				this->_size--;
+			this->_al.destroy(this->_container + this->_size - 1);
+			this->_size--;
 			return (iterator(this->_container + index));
 		}
 
@@ -310,14 +311,27 @@ namespace ft
 		{
 			size_type	index = first - this->begin();
 			size_type	size = last - first;
+			size_type	i = index;
 			
-			for (size_type i = index; i < index + size; i++)
+			if (this->_size == 0)
+				return (first);
+			if (last < first || first == last || (first < this->begin() || last > this->end()))
+				return (first);
+			for ( ; i < index + size; i++)
 			{
 				this->_al.destroy(this->_container + i);
-				if (i + size < this->_size)
-					this->_al.construct(this->_container + i, this->_container[i + size]);
-				this->_size--;
+				std::cout << "i is " << i << std::endl;
 			}
+			i = index;
+			for (size_type j = index + size; j < this->_size; j++)
+			{
+				std::cout << "i is " << i << std::endl;
+				std::cout << "j is " << j << std::endl;
+				this->_al.construct(this->_container + i, this->_container[j]);
+				this->_al.destroy(this->_container + j);
+				i++;
+			}
+			this->_size -= size;
 			return (iterator(this->_container + index));
 		}
 
