@@ -93,14 +93,14 @@ namespace ft
 
 		/*	FUNCTIONS	*/
 
-		/*	Iterators :	*/
+		/*	ITERATORS :	*/
 		iterator 		begin() { return (iterator(this->_container)); }
 		const_iterator	begin() const { return (iterator(this->_container)); }
 
 		iterator		end() { return (iterator(this->_container + this->_size)); }
 		const_iterator	end() const { return (iterator(this->_container + this->_size)); }
 
-		/*	Capacity :	*/
+		/*	CAPACITY :	*/
 		size_type	size() const { return (this->_size); }
 
 		size_type	max_size() const { return (this->_al.max_size()); }
@@ -146,7 +146,7 @@ namespace ft
 			return ;
 		}
 
-		/*	Element access :	*/
+		/*	ELEMENT ACCESS :	*/
 		reference at(size_type n)
 		{
 			if (n > this->_size - 1)
@@ -154,7 +154,7 @@ namespace ft
 			return (*(this->_container + n));
 		}
 
-		/*	Modifiers	*/
+		/*	MODIFIERS	*/
 
 		// range version
 		template <class InputIterator>
@@ -318,21 +318,38 @@ namespace ft
 			if (last < first || first == last || (first < this->begin() || last > this->end()))
 				return (first);
 			for ( ; i < index + size; i++)
-			{
 				this->_al.destroy(this->_container + i);
-				std::cout << "i is " << i << std::endl;
-			}
 			i = index;
 			for (size_type j = index + size; j < this->_size; j++)
 			{
-				std::cout << "i is " << i << std::endl;
-				std::cout << "j is " << j << std::endl;
 				this->_al.construct(this->_container + i, this->_container[j]);
 				this->_al.destroy(this->_container + j);
 				i++;
 			}
 			this->_size -= size;
 			return (iterator(this->_container + index));
+		}
+
+		void	swap(vector& x)
+		{
+			vector<T> tmp;
+
+			if (*this != x)
+			{
+				tmp._al = this->_al;
+				tmp._capacity = this->_capacity;
+				tmp._size = this->_size;
+				tmp._container = this->_container;
+				this->_al = x._al;
+				this->_capacity = x._capacity;
+				this->_size = x._size;
+				this->_container = x._container;
+				x._al = tmp._al;
+				x._capacity = tmp._capacity;
+				x._size = tmp._size;
+				x._container = tmp._container;
+			}
+			return ;
 		}
 
 		void	clear()
@@ -343,6 +360,9 @@ namespace ft
 			return ;
 		}
 
+		/*	ALLOCATOR	*/
+		allocator_type	get_allocator() const { return (this->_al); }
+
 		private:
 			/*	MEMBER VAR	*/
 			size_type		_size;
@@ -351,6 +371,53 @@ namespace ft
 			allocator_type	_al;
 
 	};
+
+	/*	RELATIONAL OPERATORS	*/
+	template <class T, class Alloc>
+	bool	operator== (const vector<T, Alloc> &lhs, const vector<T, Alloc>& rhs)
+	{
+		if (lhs.size != rhs._size)
+			return (false);
+		return (equal(lhs.begin, lhs.end, rhs.first));
+	}
+
+	template <class T, class Alloc>
+	bool	operator!= (const vector<T, Alloc> &lhs, const vector<T, Alloc>& rhs)
+	{
+		return (!(lhs == rhs));
+	}
+
+	template <class T, class Alloc>
+	bool	operator< (const vector<T, Alloc> &lhs, const vector<T, Alloc>& rhs)
+	{
+		return (lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+
+	template <class T, class Alloc>
+	bool	operator<= (const vector<T, Alloc> &lhs, const vector<T, Alloc>& rhs)
+	{
+		return (!(rhs < lhs));
+	}
+
+	template <class T, class Alloc>
+	bool	operator> (const vector<T, Alloc> &lhs, const vector<T, Alloc>& rhs)
+	{
+		return (rhs < lhs);
+	}
+
+	template <class T, class Alloc>
+	bool	operator>= (const vector<T, Alloc> &lhs, const vector<T, Alloc>& rhs)
+	{
+		return (!(lhs < rhs));
+	}
+
+	/*	SWAP	*/
+	template <class T, class Alloc>
+	void	swap(vector<T, Alloc>& x, vector<T, Alloc>& y)
+	{
+		x.swap(y);
+		return ;
+	}
 }
 
 #endif
