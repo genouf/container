@@ -2,6 +2,7 @@
 # define VECTOR_HPP
 
 #include "random_access_iterator.hpp"
+#include "reverse_iterator.hpp"
 #include "utility.hpp"
 
 namespace ft
@@ -20,6 +21,8 @@ namespace ft
 		typedef typename allocator_type::const_pointer 			const_pointer;
 		typedef typename ft::random_access_iterator<T> 			iterator;
 		typedef typename ft::random_access_iterator<const T> 	const_iterator;
+		typedef typename ft::reverse_iterator<iterator>			reverse_iterator;
+		typedef typename ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 		typedef std::ptrdiff_t 									difference_type;
 		typedef std::size_t 									size_type;
 

@@ -17,15 +17,82 @@ namespace ft
 		typedef typename iterator_traits<Iterator>::reference reference;
 
 		/*	CONSTRUCTORS	*/
+		// default constructor
 		reverse_iterator(void) : _base_it(NULL) { return ; }
 
-		explicit reverse_iterator(iterator_type it) : _base_it(it - 1) { return ; }
+		// initialization constructor
+		explicit reverse_iterator(iterator_type it) : _base_it(it) { return ; }
 
+		// copy constructor
 		template <class Iter>
 		reverse_iterator(const reverse_iterator<Iter>& rev_it) : _base_it(rev_it._base_it) { return ; }
 
 		/*	OPERATORS	*/
+		// derefence
+		reference operator*() const
+		{
+			iterator_type	tmp (this->_base_it);
 
+			return (*(--tmp)); 
+		}
+
+		// addition
+		reverse_iterator operator+(difference_type n) const { return (reverse_iterator(this->_base_it - n)); }
+
+		// pre_increment
+		reverse_iterator & operator++() 
+		{ 
+			this->_base_it--;
+			return (*this);
+		}
+
+		// post_increment
+		reverse_iterator operator++(int)
+		{
+			reverse_iterator tmp(*this);
+
+			++(*this);
+			return (tmp);
+		}
+
+		// advance
+		reverse_iterator & operator+=(difference_type n)
+		{
+			this->_base_it -= n;
+			return (*this);
+		}
+
+		// substraction
+		reverse_iterator operator-(difference_type n) const { return (reverse_iterator(this->_base_it + n)); }
+
+		// pre_decrease
+		reverse_iterator & operator--() 
+		{ 
+			this->_base_it++;
+			return (*this);
+		}
+
+		// post_decrease
+		reverse_iterator operator--(int)
+		{
+			reverse_iterator tmp(*this);
+
+			--(*this);
+			return (tmp);
+		}
+
+		// retrocede
+		reverse_iterator & operator-=(difference_type n)
+		{
+			this->_base_it += n;
+			return (*this);
+		}
+
+		// dereference
+		pointer operator->() const { return &(operator*()); }
+
+		// dereference with offset
+		reference operator[] (difference_type n) const { return (this->_base_it[-n-1]); }
 
 		/*	FUNCTIONS	*/
 		iterator_type base() const { return (this->_base_it); }
@@ -34,6 +101,39 @@ namespace ft
 			/*	MEMBER VAR	*/
 			iterator_type _base_it;
 	};
+
+	/*	RELATIONAL OPERATORS	*/
+	template<class Iterator>
+	bool operator==(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) { return (lhs == rhs); }
+
+	template<class Iterator>
+	bool operator!=(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) { return (lhs != rhs); }
+
+	template<class Iterator>
+	bool operator<(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) { return (lhs < rhs); }
+
+	template<class Iterator>
+	bool operator<=(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) { return (lhs <= rhs); }
+
+	template<class Iterator>
+	bool operator>(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) { return (lhs > rhs); }
+
+	template<class Iterator>
+	bool operator>=(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) { return (lhs >= rhs); }
+
+	/*	ADDITION	*/
+	template <class Iterator>
+	reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& rev_it)
+	{
+		return (reverse_iterator<Iterator>(rev_it.base() - n));
+	}
+
+	/*	SUBSTRACTION*/
+	template <class Iterator>
+	reverse_iterator<Iterator> operator-(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& rev_it)
+	{
+		return (reverse_iterator<Iterator>(rev_it.base() + n));
+	}
 }
 
 #endif

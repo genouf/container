@@ -18,13 +18,19 @@ namespace ft
 			typedef	T&											reference;
 
 			/*	CONSTRUCTORS	*/
+			// default constructor
 			random_access_iterator(void) : _it(NULL) { return ; }
 
+			// initialization constructor
 			random_access_iterator(pointer src) : _it(src) { return ; }
 
-			iterator &operator=(iterator const &rhs)
+			// copy constructor
+			random_access_iterator(iterator const & copy) : _it(copy._it) { return ; }
+
+			iterator & operator=(iterator const &rhs)
 			{ 
-				this->_it = rhs._it;
+				if (this != &rhs)
+					this->_it = rhs._it;
 				return (*this);
 			}
 
@@ -36,20 +42,32 @@ namespace ft
 			pointer operator->(void) const { return (this->_it); }
 
 			/*	PREFIX INCREMENT	*/
-			reference operator++(void) { this->_it++; return (*this->_it); }
-			reference operator--(void) { this->_it--; return (*this->_it); }
+			iterator & operator++() 
+			{
+				++this->_it;
+
+				return (*this);
+			}
+
+			iterator & operator--() 
+			{
+				--this->_it;
+
+				return (*this);
+			}
 
 			/*	POSTFIX INCREMENT	*/
 			iterator operator++(int) 
 			{
-				iterator	tmp = *this;
+				iterator	tmp(*this);
 
 				++(*this);
 				return (tmp);
 			}
+
 			iterator operator--(int) 
 			{
-				iterator	tmp = *this;
+				iterator	tmp(*this);
 
 				--(*this);
 				return (tmp);
@@ -64,12 +82,12 @@ namespace ft
 			bool operator<=(iterator const &rhs) const { return (this->_it <= rhs._it); }
 
 			/*	ADDITION AND SUBTRACTION*/
-			iterator operator+=(int n)
+			iterator & operator+=(int n)
 			{
 				this->_it += n;
 				return (*this);
 			}
-			iterator operator-=(int n)
+			iterator & operator-=(int n)
 			{
 				this->_it -= n;
 				return (*this);
@@ -86,11 +104,11 @@ namespace ft
 
 				return (tmp -= n);
 			}
-			friend iterator operator+(int n, iterator it) { return (it += n); }
-			friend iterator operator-(int n, iterator it) { return (it -= n); }
+			friend iterator & operator+(int n, iterator it) { return (it += n); }
+			friend iterator & operator-(int n, iterator it) { return (it -= n); }
 
 			/*	DEREFERENCE OPERATOR	*/
-			iterator operator[](unsigned int n) { return (this->_it[n]); }
+			reference operator[](int n) const { return (this->_it[n]); }
 
 			/*	DISTANCE OPERATOR	*/
 			difference_type	operator-(iterator const &other) const { return (this->_it - other._it); }
