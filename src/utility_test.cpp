@@ -9,6 +9,7 @@ int main(void)
 
 	// is_integral
 	std::cout << ft::is_integral<float>::value << std::endl;
+	std::cout << ft::is_integral<int>::value << std::endl;
 
 	//equal
 	std::vector<std::string> v1(3, "lol");

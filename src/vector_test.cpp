@@ -140,21 +140,26 @@ int	main(void)
 		mv1.push_back(4);
 		mv1.push_back(5);
 		mv1.push_back(6);
-		print_mvector(mv1);
-		mv1.erase(mv1.begin(), mv1.end());
-		print_mvector(mv1);
-		// std::vector<int> v1;
-		// v1.push_back(0);
-		// v1.push_back(1);
-		// v1.push_back(2);
-		// v1.push_back(3);
-		// v1.push_back(4);
-		// v1.push_back(5);
-		// v1.push_back(6);
+		// print_mvector(mv1);
+		// mv1.erase(mv1.begin(), mv1.end());
+		// print_mvector(mv1);
+		std::cout << "FRONT ELEMENT IS " << mv1.front() << std::endl;
+		std::cout << "BACK ELEMENT IS " << mv1.back() << std::endl;
+
+		std::vector<int> v1;
+		v1.push_back(0);
+		v1.push_back(1);
+		v1.push_back(2);
+		v1.push_back(3);
+		v1.push_back(4);
+		v1.push_back(5);
+		v1.push_back(6);
 		// print_vector(v1);
 		// v1.erase(v1.begin(), v1.end() + 2);
 		// std::cout << std::endl;
 		// print_vector(v1);
+		std::cout << "FRONT ELEMENT IS " << v1.front() << std::endl;
+		std::cout << "BACK ELEMENT IS " << v1.back() << std::endl;
 	}
 
 	return (0);

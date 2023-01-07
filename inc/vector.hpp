@@ -97,11 +97,11 @@ namespace ft
 		/*	FUNCTIONS	*/
 
 		/*	ITERATORS :	*/
-		iterator 		begin() { return (iterator(this->_container)); }
-		const_iterator	begin() const { return (iterator(this->_container)); }
+		iterator 		begin() { return (this->_container); }
+		const_iterator	begin() const { return (this->_container); }
 
-		iterator		end() { return (iterator(this->_container + this->_size)); }
-		const_iterator	end() const { return (iterator(this->_container + this->_size)); }
+		iterator		end() { return (this->_container + this->_size); }
+		const_iterator	end() const { return (this->_container + this->_size); }
 
 		/*	CAPACITY :	*/
 		size_type	size() const { return (this->_size); }
@@ -156,6 +156,12 @@ namespace ft
 				throw std::out_of_range("vector out of range");
 			return (*(this->_container + n));
 		}
+
+		reference front() { return (*this->begin()); }
+		const_reference front() const { return (*this->begin()); }
+
+		reference back() { return (*(this->end() - 1)); }
+		const_reference back() const { return (*(this->end() - 1)); }
 
 		/*	MODIFIERS	*/
 
@@ -379,9 +385,9 @@ namespace ft
 	template <class T, class Alloc>
 	bool	operator== (const vector<T, Alloc> &lhs, const vector<T, Alloc>& rhs)
 	{
-		if (lhs.size != rhs._size)
+		if (lhs.size() != rhs.size())
 			return (false);
-		return (equal(lhs.begin, lhs.end, rhs.first));
+		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
 
 	template <class T, class Alloc>
@@ -393,7 +399,7 @@ namespace ft
 	template <class T, class Alloc>
 	bool	operator< (const vector<T, Alloc> &lhs, const vector<T, Alloc>& rhs)
 	{
-		return (lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
 
 	template <class T, class Alloc>

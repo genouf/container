@@ -27,6 +27,8 @@ namespace ft
 		template <class Iter>
 		reverse_iterator(const reverse_iterator<Iter>& rev_it) : _base_it(rev_it._base_it) { return ; }
 
+		virtual ~reverse_iterator() { return ; }
+		
 		/*	OPERATORS	*/
 		// derefence
 		reference operator*() const
