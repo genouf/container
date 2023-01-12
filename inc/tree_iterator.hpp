@@ -51,7 +51,21 @@ namespace ft
 			else
 			{
 				pointer tmp = this->_it;
-				while (tmp != tmp->parent->left)
+				while (tmp->parent != NULL && tmp != tmp->parent->left)
+					tmp = tmp->parent;
+				this->_it = tmp->parent;
+			}
+			return (*this);
+		}
+
+		iterator & operator++()
+		{
+			if (this->_it->right && this->_it->right->is_null == false)
+				this->_it = tree_min(this->_it->right);
+			else
+			{
+				pointer tmp = this->_it;
+				while (tmp->parent != NULL && tmp != tmp->parent->left)
 					tmp = tmp->parent;
 				this->_it = tmp->parent;
 			}
