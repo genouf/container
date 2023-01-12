@@ -10,11 +10,11 @@ namespace ft
 	{
 		/*	MEMBER TYPES	*/
 		typedef Iterator iterator_type;
-		typedef typename iterator_traits<Iterator>::iterator_category iterator_category;
 		typedef typename iterator_traits<Iterator>::value_type value_type;
 		typedef typename iterator_traits<Iterator>::difference_type difference_type;
 		typedef typename iterator_traits<Iterator>::pointer pointer;
 		typedef typename iterator_traits<Iterator>::reference reference;
+		typedef typename iterator_traits<Iterator>::iterator_category iterator_category;
 
 		/*	CONSTRUCTORS	*/
 		// default constructor
@@ -91,7 +91,7 @@ namespace ft
 		}
 
 		// dereference
-		pointer operator->() const { return &(operator*()); }
+		pointer operator->() const { return (this->_base_it); }
 
 		// dereference with offset
 		reference operator[] (difference_type n) const { return (this->_base_it[-n-1]); }

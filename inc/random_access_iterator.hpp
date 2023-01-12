@@ -2,24 +2,25 @@
 # define RANDOM_ACCESS_ITERATOR_HPP
 
 #include <iostream>
+#include "iterator_traits.hpp"
 
 namespace ft
 {
-	template <class T>
+	template < class T >
 	struct random_access_iterator 
 	{
 			typedef	random_access_iterator iterator;
 
 			/*		MEMBER TYPES		*/
-			typedef typename std::random_access_iterator_tag	iterator_category;
-			typedef typename std::ptrdiff_t 					difference_type;
-			typedef T 											value_type;
-			typedef T*											pointer;
-			typedef	T&											reference;
+			typedef typename ft::iterator_traits<T*>::value_type		value_type;
+			typedef typename ft::iterator_traits<T*>::difference_type	difference_type;
+			typedef typename ft::iterator_traits<T*>::pointer			pointer;
+			typedef typename ft::iterator_traits<T*>::reference			reference;
+			typedef typename std::random_access_iterator_tag			iterator_category;
 
 			/*	CONSTRUCTORS	*/
 			// default constructor
-			random_access_iterator(void) : _it(NULL) { return ; }
+			random_access_iterator() : _it(NULL) { return ; }
 
 			// initialization constructor
 			random_access_iterator(pointer src) : _it(src) { return ; }
@@ -27,6 +28,7 @@ namespace ft
 			// copy constructor
 			random_access_iterator(iterator const & copy) : _it(copy._it) { return ; }
 
+			// copy-assignable constructor
 			iterator & operator=(iterator const &rhs)
 			{ 
 				if (this != &rhs)
@@ -38,8 +40,8 @@ namespace ft
 			virtual ~random_access_iterator() { return ; }
 
 			/*	DEREFERENCE	*/
-			reference operator*(void) const { return (*this->_it); }
-			pointer operator->(void) const { return (this->_it); }
+			reference operator*() const { return (*this->_it); }
+			pointer operator->() const { return (this->_it); }
 
 			/*	PREFIX INCREMENT	*/
 			iterator & operator++() 

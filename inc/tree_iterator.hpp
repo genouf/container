@@ -1,0 +1,87 @@
+#ifndef TREE_ITERATOR_HPP
+#define TREE_ITERATOR_HPP
+
+#include <iostream>
+#include "iterator_traits.hpp"
+
+namespace ft
+{
+	template < class T >
+	struct tree_iterator
+	{
+		typedef tree_iterator	iterator;
+
+		/*	MEMBER TYPES	*/
+		typedef typename ft::iterator_traits<T*>::value_type		value_type;
+		typedef typename ft::iterator_traits<T*>::difference_type	difference_type;
+		typedef typename ft::iterator_traits<T*>::pointer			pointer;
+		typedef typename ft::iterator_traits<T*>::reference			reference;
+		typedef typename std::bidirectional_iterator_tag			iterator_category;
+
+		/*	CONSTRUCTORS	*/
+		tree_iterator() : _it(NULL) { return ; }
+
+		tree_iterator(pointer src) : _it(src) { return ; }
+
+		tree_iterator(iterator const & copy) : _it(copy._it) { return ; }
+
+		iterator & operator=(iterator const &rhs)
+		{
+			if (this != &rhs)
+				this->_it = rhs._it;
+			return (*this);
+		}
+
+		/*	DESTRUCTOR	*/
+		virtual ~tree_iterator() { return ; }
+
+		/*	COMPARISON	*/
+		bool operator==(iterator const &rhs) const { return (this->_it == rhs._it); }
+		bool operator!=(iterator const &rhs) const { return (this->_it != rhs._it); }
+
+		/*	DEREFERENCE	*/
+		reference operator*() const {return (*this->_it); }
+		pointer operator->() const { return (this->_it); }
+
+		/*	PREFIX INCREMENT	*/
+		iterator & operator++()
+		{
+			if (this->_it->right && this->_it->right->is_null == false)
+				this->_it = tree_min(this->_it->right);
+			else
+			{
+				pointer tmp = this->_it;
+				while (tmp != tmp->parent->left)
+					tmp = tmp->parent;
+				this->_it = tmp->parent;
+			}
+			return (*this);
+		}
+
+		private:
+			/*	MEMBER VAR	*/
+			pointer _it;
+
+			/*	FUNCTIONS	*/
+			pointer	tree_min(pointer node) const
+			{
+				pointer tmp = node;
+			
+				while (tmp->left != NULL && tmp->left->is_null == false)
+					tmp = tmp->left;
+				return (tmp);
+			}
+
+			pointer	tree_max(pointer node) const
+			{
+				pointer tmp = node;
+			
+				while (tmp->right != NULL && tmp->right->is_null == false)
+					tmp = tmp->right;
+				return (tmp);
+			}
+	};
+	
+}
+
+#endif

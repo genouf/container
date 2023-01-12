@@ -101,7 +101,7 @@ namespace ft
 
 		// CONSTRUCTORS
 		// default
-		pair() : first(0), second(0) { return ; }
+		pair() : first(), second() { return ; }
 
 		// copy
 		template <class U, class V>
