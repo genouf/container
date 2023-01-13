@@ -49,8 +49,12 @@ namespace ft
 			/*	CONSTRUCTORS	*/
 			RBTree(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _al(alloc), _al_node(node_allocator()), _compare(comp)
 			{ 
+				this->_begin = this->_al_node.allocate(1);
+				this->_al_node.construct(this->_root, node());
 				this->_root = this->_al_node.allocate(1);
 				this->_al_node.construct(this->_root, node());
+				this->_begin->left = this->_root;
+				this->_root->parent = this->_begin;
 				this->_root->left = create_node(this->_root);
 				this->_root->right = create_node(this->_root);
 				return ;
@@ -117,7 +121,7 @@ namespace ft
 			}
 
 			node	*begin() { return (tree_min(this->_root)); }
-			node	*end() { return (NULL); }
+			node	*end() { return (this->_begin); }
 			// void	delete(key_type key)
 			// {
 			// 	node	*node_to_delete = search(key);
@@ -131,6 +135,7 @@ namespace ft
 
 		private:
 			/*	MEMBER VAR	*/
+			node			*_begin;
 			node			*_root;
 			allocator_type	_al;
 			node_allocator	_al_node;
