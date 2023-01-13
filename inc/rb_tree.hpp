@@ -50,7 +50,7 @@ namespace ft
 			RBTree(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _al(alloc), _al_node(node_allocator()), _compare(comp)
 			{ 
 				this->_begin = this->_al_node.allocate(1);
-				this->_al_node.construct(this->_root, node());
+				this->_al_node.construct(this->_begin, node());
 				this->_root = this->_al_node.allocate(1);
 				this->_al_node.construct(this->_root, node());
 				this->_begin->left = this->_root;

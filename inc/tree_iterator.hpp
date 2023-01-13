@@ -51,10 +51,42 @@ namespace ft
 			else
 			{
 				pointer tmp = this->_it;
-				while (tmp != tmp->parent->left)
+				while (tmp->parent->is_null != true && tmp != tmp->parent->left)
 					tmp = tmp->parent;
+				this->_it = tmp->parent;
 			}
 			return (*this);
+		}
+
+		iterator & operator--()
+		{
+			if (this->_it->left && this->_it->left->is_null == false)
+				this->_it = tree_max(this->_it->left);
+			else
+			{
+				pointer tmp = this->_it;
+				while (tmp != tmp->parent->right)
+					tmp = tmp->parent;
+				this->_it = tmp->parent;
+			}
+			return (*this);
+		}
+
+		/*	POSTFIX INCREMENT	*/
+		iterator operator++(int)
+		{
+			iterator	tmp(*this);
+
+			++(*this);
+			return (tmp);
+		}
+
+		iterator operator--(int)
+		{
+			iterator	tmp(*this);
+
+			--(*this);
+			return (tmp);
 		}
 
 		private:

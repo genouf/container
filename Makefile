@@ -12,7 +12,7 @@ OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
 INC = -I inc
  
 CC = c++
-FLAGS = -Wall -Wextra -Werror -g3 -std=c++98
+FLAGS = -Wall -Wextra -Werror -g3 -gdwarf-4 -std=c++98
 RM = @rm -rf
 
 DEPS_NAME = $(SRC_NAME:.cpp=.d)
