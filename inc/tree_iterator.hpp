@@ -6,7 +6,7 @@
 
 namespace ft
 {
-	template < class T >
+	template < class T, class Value >
 	struct tree_iterator
 	{
 		typedef tree_iterator	iterator;
@@ -40,8 +40,8 @@ namespace ft
 		bool operator!=(iterator const &rhs) const { return (this->_it != rhs._it); }
 
 		/*	DEREFERENCE	*/
-		reference operator*() const {return (*this->_it); }
-		pointer operator->() const { return (this->_it); }
+		Value & operator*() const {return (*this->_it->content); }
+		Value *operator->() const { return (this->_it->content); }
 
 		/*	PREFIX INCREMENT	*/
 		iterator & operator++()

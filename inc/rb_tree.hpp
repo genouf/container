@@ -8,28 +8,27 @@
 
 namespace ft
 {
-	template < class Key, class T>
+	template < class Value >
 	struct Node
 	{
-		Node() : pair(), parent(NULL), left(NULL), right(NULL), is_red(true), is_null(true) { return ; }
+		Node() : content(NULL), parent(NULL), left(NULL), right(NULL), is_red(true), is_null(true) { return ; }
 		virtual ~Node() { return ; }
 
-		ft::pair<Key, T> 	pair;
-		Node				*parent;
-		Node				*left;
-		Node				*right;
-		bool				is_red;
-		bool				is_null;
+		Value 	*content;
+		Node	*parent;
+		Node	*left;
+		Node	*right;
+		bool	is_red;
+		bool	is_null;
 	};
 
-	template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
+	template < class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
 	class	RBTree
 	{
 		public:
 
 			/*	MEMBER TYPES	*/
-			typedef typename ft::Node<Key, T> 										node;
-			typedef Key																key_type;
+			typedef typename ft::Node<T> 											node;
 			typedef	T																value_type;
 			typedef Compare															key_compare;
 			typedef Allocator														allocator_type;
@@ -41,8 +40,8 @@ namespace ft
 			typedef typename allocator_type::const_pointer							const_pointer;
 			typedef std::ptrdiff_t													difference_Type;
 			typedef std::size_t														size_type;
-			typedef typename ft::tree_iterator<node>								iterator;
-			typedef typename ft::tree_iterator<const node>							const_iterator;
+			typedef typename ft::tree_iterator<node, value_type>								iterator;
+			typedef typename ft::tree_iterator<const node, const value_type>							const_iterator;
 			typedef typename ft::reverse_iterator<iterator>							reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 
@@ -74,49 +73,49 @@ namespace ft
 				return (new_node);
 			}
 
-			void	assign_node(node *node, ft::pair<Key, T> pair)
+			void	assign_node(node *node, value_type *content)
 			{
-				node->pair = pair;
+				node->content = content;
 				node->left = create_node(node);
 				node->right = create_node(node);
 				node->is_null = false;
-				std::cout << "NEW NODE < " << node->pair.first << " > => PARENT IS < " << node->parent->pair.first << " >" << std::endl;  
+				std::cout << "NEW NODE < " << node->content->first << " > => PARENT IS < " << node->parent->content->first << " >" << std::endl;  
 				return ;
 			}
 
-			node	*search(key_type v)
+			node	*search(value_type *entry)
 			{
 				node	*i = this->_root;
 				
 				while (i->is_null != true)
 				{
-					if (this->_compare(v, i->pair.first) == false && this->_compare(i->pair.first, v) == false)
+					if (this->_compare(*entry, *i->content) == false && this->_compare(*i->content, *entry) == false)
 						return (NULL);
-					else if (this->_compare(v, i->pair.first) == true)
+					else if (this->_compare(*entry, *i->content) == true)
 						i = i->left;
-					else if (this->_compare(v, i->pair.first) == false)
+					else if (this->_compare(*entry, *i->content) == false)
 						i = i->right;
 				}
 				return (i);
 			}
 
-			void	insert(ft::pair<Key, T> entry)
+			void	insert(value_type entry)
 			{
 				if (this->_root->is_null == true)
 				{
-					this->_root->pair = entry;
+					this->_root->content = &entry;
 					this->_root->is_red = false;
 					this->_root->is_null = false;
-				}
+				} 
 				else
 				{
-					node	*new_one = search(entry.first);
+					node	*new_one = search(&entry);
 					if (new_one == NULL)
 					{
 						std::cout << "IMPOSSIBLE D'INSERER CETTE CLE !" << std::endl;
 						return ;
 					}
-					assign_node(new_one, entry);
+					assign_node(new_one, &entry);
 				}
 			}
 

@@ -44,14 +44,14 @@ namespace ft
 			pointer operator->() const { return (this->_it); }
 
 			/*	PREFIX INCREMENT	*/
-			iterator & operator++() 
+			iterator & operator++()
 			{
 				++this->_it;
 
 				return (*this);
 			}
 
-			iterator & operator--() 
+			iterator & operator--()
 			{
 				--this->_it;
 
@@ -59,7 +59,7 @@ namespace ft
 			}
 
 			/*	POSTFIX INCREMENT	*/
-			iterator operator++(int) 
+			iterator operator++(int)
 			{
 				iterator	tmp(*this);
 
