@@ -40,8 +40,8 @@ namespace ft
 			typedef typename allocator_type::const_pointer							const_pointer;
 			typedef std::ptrdiff_t													difference_Type;
 			typedef std::size_t														size_type;
-			typedef typename ft::tree_iterator<node, value_type>								iterator;
-			typedef typename ft::tree_iterator<const node, const value_type>							const_iterator;
+			typedef typename ft::tree_iterator<node, value_type>					iterator;
+			typedef typename ft::tree_iterator<const node, const value_type>		const_iterator;
 			typedef typename ft::reverse_iterator<iterator>							reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 
@@ -63,40 +63,13 @@ namespace ft
 			virtual ~RBTree() { return ; }
 
 			/*	FUNCTIONS	*/
-			node	*create_node(node *parent)
+			void	test(int choice)
 			{
-				node	*new_node;
-
-				new_node = this->_al_node.allocate(1);
-				this->_al_node.construct(new_node, node());
-				new_node->parent = parent;
-				return (new_node);
-			}
-
-			void	assign_node(node *node, value_type *content)
-			{
-				node->content = content;
-				node->left = create_node(node);
-				node->right = create_node(node);
-				node->is_null = false;
-				std::cout << "NEW NODE < " << node->content->first << " > => PARENT IS < " << node->parent->content->first << " >" << std::endl;  
+				if (choice == 1)
+					this->rotate_left(this->_root);
+				else
+					this->rotate_right(this->_root);
 				return ;
-			}
-
-			node	*search(value_type *entry)
-			{
-				node	*i = this->_root;
-				
-				while (i->is_null != true)
-				{
-					if (this->_compare(*entry, *i->content) == false && this->_compare(*i->content, *entry) == false)
-						return (NULL);
-					else if (this->_compare(*entry, *i->content) == true)
-						i = i->left;
-					else if (this->_compare(*entry, *i->content) == false)
-						i = i->right;
-				}
-				return (i);
 			}
 
 			void	insert(value_type entry)
@@ -111,26 +84,49 @@ namespace ft
 				{
 					node	*new_one = search(&entry);
 					if (new_one == NULL)
-					{
-						std::cout << "IMPOSSIBLE D'INSERER CETTE CLE !" << std::endl;
 						return ;
-					}
 					assign_node(new_one, &entry);
 				}
 			}
 
-			node	*begin() { return (tree_min(this->_root)); }
-			node	*end() { return (this->_begin); }
-			// void	delete(key_type key)
-			// {
-			// 	node	*node_to_delete = search(key);
-			// 	if (node == NULL)
-			// 	{
-			// 		std::cout << "IMPOSSIBLE DE SUPPRIMER CETTE CLE !" << std::endl;
-			// 		return ;
-			// 	}
+			void	rotate_left(node *n)
+			{
+				node *parent = n->parent;
+				node *right = n->right;
 
-			// }
+				if (n == parent->left)
+					parent->left = right;
+				else if (n == parent->right)
+					parent->right = right;
+				right->parent = parent;
+				node *tmp = right->left;
+				right->left = n;
+				n->parent = right;
+				n->right = tmp;
+				tmp->parent = n;
+				return ;
+			}
+
+			void	rotate_right(node *n)
+			{
+				node *parent = n->parent;
+				node *left = n->left;
+				
+				if (n == parent->left)
+					parent->left = left;
+				else if (n == parent->right)
+					parent->right = left;
+				left->parent = parent;
+				node *tmp = left->right;
+				left->right = n;
+				n->parent = left;
+				n->left = tmp;
+				tmp->parent = n;
+				return ;
+			}
+
+			node	*begin() { return (tree_min(this->_begin->left)); }
+			node	*end() { return (this->_begin); }
 
 		private:
 			/*	MEMBER VAR	*/
@@ -153,6 +149,41 @@ namespace ft
 				while (node->right != NULL && node->right->is_null == false)
 					node = node->right;
 				return (node);
+			}
+
+			node	*create_node(node *parent)
+			{
+				node	*new_node;
+
+				new_node = this->_al_node.allocate(1);
+				this->_al_node.construct(new_node, node());
+				new_node->parent = parent;
+				return (new_node);
+			}
+
+			void	assign_node(node *node, value_type *content)
+			{
+				node->content = content;
+				node->left = create_node(node);
+				node->right = create_node(node);
+				node->is_null = false;
+				return ;
+			}
+
+			node	*search(value_type *entry)
+			{
+				node	*i = this->_root;
+				
+				while (i->is_null != true)
+				{
+					if (this->_compare(*entry, *i->content) == false && this->_compare(*i->content, *entry) == false)
+						return (NULL);
+					else if (this->_compare(*entry, *i->content) == true)
+						i = i->left;
+					else if (this->_compare(*entry, *i->content) == false)
+						i = i->right;
+				}
+				return (i);
 			}
 	};
 }
