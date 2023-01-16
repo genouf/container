@@ -42,6 +42,7 @@ int	main(void)
 	{
 		ft::RBTree<ft::pair<int, std::string> >	tree;
 
+		// std::cout << "SUIVANT" << std::endl;
 		tree.insert(ft::make_pair<int, std::string>(24, "OK"));
 		tree.insert(ft::make_pair<int, std::string>(12, "OK"));
 		tree.insert(ft::make_pair<int, std::string>(1, "OK"));

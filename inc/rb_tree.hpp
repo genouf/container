@@ -12,10 +12,6 @@ namespace ft
 	struct Node
 	{
 		typedef	Allocator														allocator_type;
-		typedef typename allocator_type::reference								reference;
-		typedef typename allocator_type::const_reference						const_reference;
-		typedef typename allocator_type::pointer								pointer;
-		typedef typename allocator_type::const_pointer							const_pointer;
 
 		Node(const allocator_type& alloc = allocator_type()) : parent(NULL), left(NULL), right(NULL), is_red(true), is_null(true), _al(alloc)
 		{
@@ -23,16 +19,24 @@ namespace ft
 			this->_al.construct(this->content, Value());
 			return ; 
 		}
+
+		Node(const Node &src) : parent(src.parent), left(src.left), right(src.right), is_red(src.is_red), is_null(src.is_null), _al(src._al)
+		{
+			this->content = this->_al.allocate(1);
+			this->_al.construct(this->content, *src.content);
+			return ;
+		}
+
 		virtual ~Node()
 		{
-			// this->_al.destroy(this->content);
-			// this->_al.deallocate(this->content, 1);	
+			this->_al.destroy(this->content);
+			this->_al.deallocate(this->content, 1);	
 			return ; 
 		}
 
 		void	insert(Value entry)
 		{
-			// this->_al.destroy(this->content);
+			this->_al.destroy(this->content);
 			this->_al.construct(this->content, entry);
 			return ;
 		}
@@ -87,7 +91,13 @@ namespace ft
 			}
 
 			/*	DESTRUCTOR	*/
-			virtual ~RBTree() { return ; }
+			virtual ~RBTree()
+			{
+				clean_tree(this->_begin->left);
+				this->_al_node.destroy(this->_begin);
+				this->_al_node.deallocate(this->_begin, 1);
+				return ; 
+			}
 
 			/*	FUNCTIONS	*/
 			void	test(int choice)
@@ -211,6 +221,23 @@ namespace ft
 						i = i->right;
 				}
 				return (i);
+			}
+
+			void	clean(node *n)
+			{
+				this->_al_node.destroy(n);
+				this->_al_node.deallocate(n, 1);
+				return ;
+			}
+
+			void	clean_tree(node *n)
+			{
+				if (n->left)
+					clean_tree(n->left);
+				if (n->right)
+					clean_tree(n->right);
+				clean(n);
+				return ;
 			}
 	};
 }
