@@ -46,13 +46,11 @@ int	main(void)
 		tree.insert(ft::make_pair<int, std::string>(12, "OK"));
 		tree.insert(ft::make_pair<int, std::string>(1, "OK"));
 		tree.insert(ft::make_pair<int, std::string>(32, "OK"));
-		tree.insert(ft::make_pair<int, std::string>(14, "OK"));
 		
 		for (ft::RBTree<ft::pair<int, std::string> >::iterator	it = tree.begin(); it != tree.end(); ++it)
 		{
 			std::cout << "VALUE IS " << it->content->first;
-			if (it->parent->is_null != true)
-				std::cout << " AND PARENT IS " << it->parent->content->first;
+			std::cout << " AND PARENT IS " << it->parent->content->first;
 			std::cout << std::endl;
 		}
 		std::cout << "====== ROTATE_RIGHT ======" << std::endl;
@@ -60,8 +58,7 @@ int	main(void)
 		for (ft::RBTree<ft::pair<int, std::string> >::iterator	it = tree.begin(); it != tree.end(); ++it)
 		{
 			std::cout << "VALUE IS " << it->content->first;
-			if (it->parent->is_null != true)
-				std::cout << " AND PARENT IS " << it->parent->content->first;
+			std::cout << " AND PARENT IS " << it->parent->content->first;
 			std::cout << std::endl;
 		}
 		std::cout << "====== ROTATE_LEFT ======" << std::endl;
@@ -69,8 +66,7 @@ int	main(void)
 		for (ft::RBTree<ft::pair<int, std::string> >::iterator	it = tree.begin(); it != tree.end(); ++it)
 		{
 			std::cout << "VALUE IS " << it->content->first;
-			if (it->parent->is_null != true)
-				std::cout << " AND PARENT IS " << it->parent->content->first;
+			std::cout << " AND PARENT IS " << it->parent->content->first;
 			std::cout << std::endl;
 		}
 	}	

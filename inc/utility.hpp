@@ -110,6 +110,7 @@ namespace ft
 		// initialization
 		pair (const first_type& a, const second_type& b) : first(a), second(b) { return ; }
 
+		~pair() { return ; }
 		// assignation
 		pair& operator= (const pair& pr)
 		{

@@ -8,18 +8,45 @@
 
 namespace ft
 {
-	template < class Value >
+	template < class Value, class Allocator = std::allocator<Value> >
 	struct Node
 	{
-		Node() : content(NULL), parent(NULL), left(NULL), right(NULL), is_red(true), is_null(true) { return ; }
-		virtual ~Node() { return ; }
+		typedef	Allocator														allocator_type;
+		typedef typename allocator_type::reference								reference;
+		typedef typename allocator_type::const_reference						const_reference;
+		typedef typename allocator_type::pointer								pointer;
+		typedef typename allocator_type::const_pointer							const_pointer;
 
-		Value 	*content;
-		Node	*parent;
-		Node	*left;
-		Node	*right;
-		bool	is_red;
-		bool	is_null;
+		Node(const allocator_type& alloc = allocator_type()) : parent(NULL), left(NULL), right(NULL), is_red(true), is_null(true), _al(alloc)
+		{
+			this->content = this->_al.allocate(1);
+			this->_al.construct(this->content, Value());
+			return ; 
+		}
+		virtual ~Node()
+		{
+			// this->_al.destroy(this->content);
+			// this->_al.deallocate(this->content, 1);	
+			return ; 
+		}
+
+		void	insert(Value entry)
+		{
+			// this->_al.destroy(this->content);
+			this->_al.construct(this->content, entry);
+			return ;
+		}
+
+		Value 			*content;
+		Node			*parent;
+		Node			*left;
+		Node			*right;
+		bool			is_red;
+		bool			is_null;
+
+		private:
+			allocator_type 	_al;
+
 	};
 
 	template < class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
@@ -28,7 +55,7 @@ namespace ft
 		public:
 
 			/*	MEMBER TYPES	*/
-			typedef typename ft::Node<T> 											node;
+			typedef typename ft::Node<T, Allocator> 											node;
 			typedef	T																value_type;
 			typedef Compare															key_compare;
 			typedef Allocator														allocator_type;
@@ -76,16 +103,16 @@ namespace ft
 			{
 				if (this->_root->is_null == true)
 				{
-					this->_root->content = &entry;
+					this->_root->insert(entry);
 					this->_root->is_red = false;
 					this->_root->is_null = false;
 				} 
 				else
 				{
-					node	*new_one = search(&entry);
+					node	*new_one = search(entry);
 					if (new_one == NULL)
 						return ;
-					assign_node(new_one, &entry);
+					assign_node(new_one, entry);
 				}
 			}
 
@@ -161,26 +188,26 @@ namespace ft
 				return (new_node);
 			}
 
-			void	assign_node(node *node, value_type *content)
+			void	assign_node(node *node, value_type content)
 			{
-				node->content = content;
+				node->insert(content);
 				node->left = create_node(node);
 				node->right = create_node(node);
 				node->is_null = false;
 				return ;
 			}
 
-			node	*search(value_type *entry)
+			node	*search(value_type entry)
 			{
 				node	*i = this->_root;
 				
 				while (i->is_null != true)
 				{
-					if (this->_compare(*entry, *i->content) == false && this->_compare(*i->content, *entry) == false)
+					if (this->_compare(entry, *i->content) == false && this->_compare(*i->content, entry) == false)
 						return (NULL);
-					else if (this->_compare(*entry, *i->content) == true)
+					else if (this->_compare(entry, *i->content) == true)
 						i = i->left;
-					else if (this->_compare(*entry, *i->content) == false)
+					else if (this->_compare(entry, *i->content) == false)
 						i = i->right;
 				}
 				return (i);
