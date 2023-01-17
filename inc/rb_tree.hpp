@@ -13,7 +13,8 @@ namespace ft
 	{
 		typedef	Allocator														allocator_type;
 
-		Node(const allocator_type& alloc = allocator_type()) : parent(NULL), left(NULL), right(NULL), is_red(true), is_null(true), _al(alloc)
+		/*	CONSTRUCTORS	*/
+		Node(const allocator_type& alloc = allocator_type()) : parent(NULL), left(NULL), right(NULL), is_red(false), is_null(true), _al(alloc)
 		{
 			this->content = this->_al.allocate(1);
 			this->_al.construct(this->content, Value());
@@ -27,6 +28,7 @@ namespace ft
 			return ;
 		}
 
+		/*	DESTRUCTOR	*/
 		virtual ~Node()
 		{
 			this->_al.destroy(this->content);
@@ -34,6 +36,7 @@ namespace ft
 			return ; 
 		}
 
+		/*	FUNCTIONS	*/
 		void	insert(Value entry)
 		{
 			this->_al.destroy(this->content);
@@ -41,6 +44,7 @@ namespace ft
 			return ;
 		}
 
+		/*	PUBLIC VAR	*/
 		Value 			*content;
 		Node			*parent;
 		Node			*left;
@@ -49,6 +53,7 @@ namespace ft
 		bool			is_null;
 
 		private:
+			/*	PRIVATE VAR	*/
 			allocator_type 	_al;
 
 	};
@@ -59,7 +64,7 @@ namespace ft
 		public:
 
 			/*	MEMBER TYPES	*/
-			typedef typename ft::Node<T, Allocator> 											node;
+			typedef typename ft::Node<T, Allocator> 								node;
 			typedef	T																value_type;
 			typedef Compare															key_compare;
 			typedef Allocator														allocator_type;
@@ -99,23 +104,14 @@ namespace ft
 				return ; 
 			}
 
-			/*	FUNCTIONS	*/
-			void	test(int choice)
-			{
-				if (choice == 1)
-					this->rotate_left(this->_root);
-				else
-					this->rotate_right(this->_root);
-				return ;
-			}
-
+			/*	PUBLIC FUNCTIONS	*/
 			void	insert(value_type entry)
 			{
-				if (this->_root->is_null == true)
+				if (this->_begin->left->is_null == true)
 				{
-					this->_root->insert(entry);
-					this->_root->is_red = false;
-					this->_root->is_null = false;
+					this->_begin->left->insert(entry);
+					this->_begin->left->is_red = false;
+					this->_begin->left->is_null = false;
 				} 
 				else
 				{
@@ -123,7 +119,160 @@ namespace ft
 					if (new_one == NULL)
 						return ;
 					assign_node(new_one, entry);
+					check_insert(new_one);
 				}
+			}
+
+			node	*begin() { return (tree_min(this->_begin->left)); }
+			node	*end() { return (this->_begin); }
+
+		private:
+			/*	PRIVATE VAR	*/
+			node			*_begin;
+			node			*_root;
+			allocator_type	_al;
+			node_allocator	_al_node;
+			key_compare		_compare;
+
+			/*	PRIVATE FUNCTIONS	*/
+			node 	*tree_min(node  *node) const
+			{
+				while (node->left != NULL && node->left->is_null == false)
+					node = node->left;
+				return (node);
+			}
+
+			node 	*tree_max(node  *node) const
+			{
+				while (node->right != NULL && node->right->is_null == false)
+					node = node->right;
+				return (node);
+			}
+
+			node	*create_node(node *parent)
+			{
+				node	*new_node;
+
+				new_node = this->_al_node.allocate(1);
+				this->_al_node.construct(new_node, node());
+				new_node->parent = parent;
+				return (new_node);
+			}
+
+			void	assign_node(node *node, value_type content)
+			{
+				node->insert(content);
+				node->left = create_node(node);
+				node->right = create_node(node);
+				node->is_null = false;
+				node->is_red = true;
+				return ;
+			}
+
+			node	*search(value_type entry)
+			{
+				node	*i = this->_begin->left;
+				
+				while (i->is_null != true)
+				{
+					if (this->_compare(entry, *i->content) == false && this->_compare(*i->content, entry) == false)
+						return (NULL);
+					else if (this->_compare(entry, *i->content) == true)
+						i = i->left;
+					else if (this->_compare(entry, *i->content) == false)
+						i = i->right;
+				}
+				return (i);
+			}
+
+			void	clean(node *n)
+			{
+				this->_al_node.destroy(n);
+				this->_al_node.deallocate(n, 1);
+				return ;
+			}
+
+			void	clean_tree(node *n)
+			{
+				if (n->left)
+					clean_tree(n->left);
+				if (n->right)
+					clean_tree(n->right);
+				clean(n);
+				return ;
+			}
+
+			node	*find_uncle(node *n)
+			{
+				node	*gp = n->parent->parent;
+
+				if (n->parent == gp->left)
+					return (gp->right);
+				else if (n->parent == gp->right)
+					return (gp->left);
+				return (NULL);
+			}
+
+			int	child_of_who(node *n)
+			{
+				if (n == n->parent->left)
+					return (0);
+				if (n == n->parent->right)
+					return (1);
+				return (-1);
+			}
+
+			void	check_insert(node *new_one)
+			{
+				while (new_one->parent->is_red == true)
+				{
+					node	*uncle = find_uncle(new_one);
+					node	*gp = new_one->parent->parent;
+
+					if (uncle->is_red == true)
+					{
+						uncle->is_red = false;
+						new_one->parent->is_red = false;
+						gp->is_red = true;
+						new_one = gp;
+					}
+					else
+					{
+						// Le parent est un enfant gauche
+						if (child_of_who(new_one->parent) == 0) 
+						{
+
+							if (child_of_who(new_one) == 1)
+							{
+								rotate_left(new_one->parent);
+								new_one = new_one->left;
+							}
+							else if (child_of_who(new_one) == 0)
+							{
+								new_one->parent->is_red = false;
+								gp->is_red = true;
+								rotate_right(gp);
+							}
+						}
+						// Cas symetrique
+						else if (child_of_who(new_one->parent) == 1)
+						{
+							if (child_of_who(new_one) == 0)
+							{
+								rotate_right(new_one->parent);
+								new_one = new_one->right;
+							}
+							else if (child_of_who(new_one) == 1)
+							{
+								new_one->parent->is_red = false;
+								gp->is_red = true;
+								rotate_left(gp);
+							}
+						}
+					}
+					this->_begin->left->is_red = false;
+				}
+				return ;
 			}
 
 			void	rotate_left(node *n)
@@ -159,84 +308,6 @@ namespace ft
 				n->parent = left;
 				n->left = tmp;
 				tmp->parent = n;
-				return ;
-			}
-
-			node	*begin() { return (tree_min(this->_begin->left)); }
-			node	*end() { return (this->_begin); }
-
-		private:
-			/*	MEMBER VAR	*/
-			node			*_begin;
-			node			*_root;
-			allocator_type	_al;
-			node_allocator	_al_node;
-			key_compare		_compare;
-
-			/*	FUNCTIONS	*/
-			node 	*tree_min(node  *node) const
-			{
-				while (node->left != NULL && node->left->is_null == false)
-					node = node->left;
-				return (node);
-			}
-
-			node 	*tree_max(node  *node) const
-			{
-				while (node->right != NULL && node->right->is_null == false)
-					node = node->right;
-				return (node);
-			}
-
-			node	*create_node(node *parent)
-			{
-				node	*new_node;
-
-				new_node = this->_al_node.allocate(1);
-				this->_al_node.construct(new_node, node());
-				new_node->parent = parent;
-				return (new_node);
-			}
-
-			void	assign_node(node *node, value_type content)
-			{
-				node->insert(content);
-				node->left = create_node(node);
-				node->right = create_node(node);
-				node->is_null = false;
-				return ;
-			}
-
-			node	*search(value_type entry)
-			{
-				node	*i = this->_root;
-				
-				while (i->is_null != true)
-				{
-					if (this->_compare(entry, *i->content) == false && this->_compare(*i->content, entry) == false)
-						return (NULL);
-					else if (this->_compare(entry, *i->content) == true)
-						i = i->left;
-					else if (this->_compare(entry, *i->content) == false)
-						i = i->right;
-				}
-				return (i);
-			}
-
-			void	clean(node *n)
-			{
-				this->_al_node.destroy(n);
-				this->_al_node.deallocate(n, 1);
-				return ;
-			}
-
-			void	clean_tree(node *n)
-			{
-				if (n->left)
-					clean_tree(n->left);
-				if (n->right)
-					clean_tree(n->right);
-				clean(n);
 				return ;
 			}
 	};

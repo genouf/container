@@ -42,34 +42,25 @@ int	main(void)
 	{
 		ft::RBTree<ft::pair<int, std::string> >	tree;
 
-		// std::cout << "SUIVANT" << std::endl;
-		tree.insert(ft::make_pair<int, std::string>(24, "OK"));
+		// TABLEAU DE BASE
+		// tree.insert(ft::make_pair<int, std::string>(11, "OK"));
+		// tree.insert(ft::make_pair<int, std::string>(14, "OK"));
+		// tree.insert(ft::make_pair<int, std::string>(2, "OK"));
+		// tree.insert(ft::make_pair<int, std::string>(15, "OK"));
+		// tree.insert(ft::make_pair<int, std::string>(7, "OK"));
+		// tree.insert(ft::make_pair<int, std::string>(1, "OK"));
+		// tree.insert(ft::make_pair<int, std::string>(5, "OK"));
+		// tree.insert(ft::make_pair<int, std::string>(8, "OK"));
+		// tree.insert(ft::make_pair<int, std::string>(4, "OK"));
+		tree.insert(ft::make_pair<int, std::string>(41, "OK"));
+		tree.insert(ft::make_pair<int, std::string>(38, "OK"));
+		tree.insert(ft::make_pair<int, std::string>(31, "OK"));
 		tree.insert(ft::make_pair<int, std::string>(12, "OK"));
-		tree.insert(ft::make_pair<int, std::string>(1, "OK"));
-		tree.insert(ft::make_pair<int, std::string>(32, "OK"));
+		tree.insert(ft::make_pair<int, std::string>(19, "OK"));
+		tree.insert(ft::make_pair<int, std::string>(8, "OK"));
 		
 		for (ft::RBTree<ft::pair<int, std::string> >::iterator	it = tree.begin(); it != tree.end(); ++it)
-		{
-			std::cout << "VALUE IS " << it->content->first;
-			std::cout << " AND PARENT IS " << it->parent->content->first;
-			std::cout << std::endl;
-		}
-		std::cout << "====== ROTATE_RIGHT ======" << std::endl;
-		tree.test(2);
-		for (ft::RBTree<ft::pair<int, std::string> >::iterator	it = tree.begin(); it != tree.end(); ++it)
-		{
-			std::cout << "VALUE IS " << it->content->first;
-			std::cout << " AND PARENT IS " << it->parent->content->first;
-			std::cout << std::endl;
-		}
-		std::cout << "====== ROTATE_LEFT ======" << std::endl;
-		tree.test(1);
-		for (ft::RBTree<ft::pair<int, std::string> >::iterator	it = tree.begin(); it != tree.end(); ++it)
-		{
-			std::cout << "VALUE IS " << it->content->first;
-			std::cout << " AND PARENT IS " << it->parent->content->first;
-			std::cout << std::endl;
-		}
+			std::cout << "VALUE IS " << it->content->first << " AND PARENT IS " << it->parent->content->first << " AND COLOR IS " << it->is_red << std::endl;
 	}	
 	return (0);
 }
