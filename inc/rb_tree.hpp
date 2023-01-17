@@ -123,6 +123,105 @@ namespace ft
 				}
 			}
 
+			void	delete_sheet(node *n)
+			{
+				clean(n->left);
+				clean(n->right);
+				n->left = NULL;
+				n->right = NULL;
+				this->_al_node.destroy(n->content);
+				n->is_red = false;
+				n->is_null = true;
+			}
+
+			void	transfer_node(node *n1, node *n2, bool is_left)
+			{
+				if (child_of_who(n1) == 0)
+					n1->parent->left = n2;
+				else if (child_of_who(n2) == 1)
+					n1->parent->right = n2;
+				n2->parent = n1->parent;
+				is_left ? clean(n1->right) : clean(n1->left);
+				clean(n1);
+				return ;
+			}
+
+			void	move_node(node *n, node *to_delete)
+			{
+				clean(n->left);
+				n->right->parent = n->parent;
+				if (child_of_who(n) == 0)
+					n->parent->left = n->right;
+				else if (child_of_who(n) == 1)
+					n->parent->right = n->right;
+				n->parent = to_delete->parent;
+				n->left = to_delete->left;
+				n->right = to_delete->right;
+				n->is_red = to_delete->is_red;
+				n->is_null = to_delete->is_null;
+				return ;
+			}
+
+			void	recolor(node *n)
+			{
+				if (n->is_red == true)
+					n->is_red = false;
+				else if (n == this->_begin->left)
+					return ;
+				else
+				{
+					if (child_of_who(n) == 0)
+					{
+						if (n->parent->right->is_red == true)
+						{
+							n->parent->right->is_red = false;
+							n->parent->is_red = true;
+							rotate_left(n->parent);
+						}
+					}
+				}
+				return ;
+			}
+
+			void	pop(value_type entry)
+			{
+				node	*to_delete = search(entry);
+
+				if (to_delete)
+				{
+					node	*was_black;
+
+					if (is_a_sheet(to_delete))
+					{
+						to_delete->is_red == false ? was_black = to_delete : was_black = NULL;
+						delete_sheet(to_delete);
+					}
+					else if (has_one_child(to_delete))
+					{
+						if (to_delete->left->is_null == false)
+						{
+							to_delete->is_red == false ? was_black = to_delete->left : was_black = NULL;
+							transfer_node(to_delete, to_delete->left, true);
+						}
+						else
+						{
+							to_delete->is_red == false ? was_black = to_delete->right : was_black = NULL;
+							transfer_node(to_delete, to_delete->right, false);
+						}
+					}
+					else
+					{
+						node *close_value = tree_min(to_delete->right);
+
+						close_value->is_red == false ? was_black = close_value->right : was_black = NULL;
+						move_node(close_value, to_delete);
+					}
+					if (was_black)
+						recolor(was_black);
+				}
+				return ;
+			}
+
 			node	*begin() { return (tree_min(this->_begin->left)); }
 			node	*end() { return (this->_begin); }
 
@@ -135,6 +234,7 @@ namespace ft
 			key_compare		_compare;
 
 			/*	PRIVATE FUNCTIONS	*/
+			/*	For iterators	*/
 			node 	*tree_min(node  *node) const
 			{
 				while (node->left != NULL && node->left->is_null == false)
@@ -149,6 +249,7 @@ namespace ft
 				return (node);
 			}
 
+			/*	Initialization	*/
 			node	*create_node(node *parent)
 			{
 				node	*new_node;
@@ -185,6 +286,7 @@ namespace ft
 				return (i);
 			}
 
+			/*	Clean allocations	*/
 			void	clean(node *n)
 			{
 				this->_al_node.destroy(n);
@@ -202,6 +304,7 @@ namespace ft
 				return ;
 			}
 
+			/*	Insertions	*/
 			node	*find_uncle(node *n)
 			{
 				node	*gp = n->parent->parent;
@@ -211,15 +314,6 @@ namespace ft
 				else if (n->parent == gp->right)
 					return (gp->left);
 				return (NULL);
-			}
-
-			int	child_of_who(node *n)
-			{
-				if (n == n->parent->left)
-					return (0);
-				if (n == n->parent->right)
-					return (1);
-				return (-1);
 			}
 
 			void	check_insert(node *new_one)
@@ -275,6 +369,7 @@ namespace ft
 				return ;
 			}
 
+			/*	Rotations	*/
 			void	rotate_left(node *n)
 			{
 				node *parent = n->parent;
@@ -309,6 +404,32 @@ namespace ft
 				n->left = tmp;
 				tmp->parent = n;
 				return ;
+			}
+
+			/*	Infos	*/
+			int	child_of_who(node *n)
+			{
+				if (n == n->parent->left)
+					return (0);
+				if (n == n->parent->right)
+					return (1);
+				return (-1);
+			}
+
+			bool	is_a_sheet(node *n)
+			{
+				if (n->left->is_null == true && n->right->is_null == true)
+					return (true);
+				return (false);
+			}
+
+			bool	has_one_child(node *n)
+			{
+				if (n->left->is_null == true && n->right->is_null == false)
+					return (true)
+				if (n->left->is_null == false && n->right->is_null == true)
+					return (true);
+				return (false);
 			}
 	};
 }
