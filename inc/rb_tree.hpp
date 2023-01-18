@@ -123,69 +123,9 @@ namespace ft
 				}
 			}
 
-			void	delete_sheet(node *n)
-			{
-				clean(n->left);
-				clean(n->right);
-				n->left = NULL;
-				n->right = NULL;
-				this->_al_node.destroy(n->content);
-				n->is_red = false;
-				n->is_null = true;
-			}
-
-			void	transfer_node(node *n1, node *n2, bool is_left)
-			{
-				if (child_of_who(n1) == 0)
-					n1->parent->left = n2;
-				else if (child_of_who(n2) == 1)
-					n1->parent->right = n2;
-				n2->parent = n1->parent;
-				is_left ? clean(n1->right) : clean(n1->left);
-				clean(n1);
-				return ;
-			}
-
-			void	move_node(node *n, node *to_delete)
-			{
-				clean(n->left);
-				n->right->parent = n->parent;
-				if (child_of_who(n) == 0)
-					n->parent->left = n->right;
-				else if (child_of_who(n) == 1)
-					n->parent->right = n->right;
-				n->parent = to_delete->parent;
-				n->left = to_delete->left;
-				n->right = to_delete->right;
-				n->is_red = to_delete->is_red;
-				n->is_null = to_delete->is_null;
-				return ;
-			}
-
-			void	recolor(node *n)
-			{
-				if (n->is_red == true)
-					n->is_red = false;
-				else if (n == this->_begin->left)
-					return ;
-				else
-				{
-					if (child_of_who(n) == 0)
-					{
-						if (n->parent->right->is_red == true)
-						{
-							n->parent->right->is_red = false;
-							n->parent->is_red = true;
-							rotate_left(n->parent);
-						}
-					}
-				}
-				return ;
-			}
-
 			void	pop(value_type entry)
 			{
-				node	*to_delete = search(entry);
+				node	*to_delete = find(entry);
 
 				if (to_delete)
 				{
@@ -222,7 +162,12 @@ namespace ft
 				return ;
 			}
 
-			node	*begin() { return (tree_min(this->_begin->left)); }
+			node	*begin()
+			{
+				if (this->_begin->left->is_null == true)
+					return (this->_begin);
+				return (tree_min(this->_begin->left)); 
+			}
 			node	*end() { return (this->_begin); }
 
 		private:
@@ -284,6 +229,22 @@ namespace ft
 						i = i->right;
 				}
 				return (i);
+			}
+
+			node	*find(value_type entry)
+			{
+				node	*i = this->_begin->left;
+				
+				while (i->is_null != true)
+				{
+					if (this->_compare(entry, *i->content) == false && this->_compare(*i->content, entry) == false)
+						return (i);
+					else if (this->_compare(entry, *i->content) == true)
+						i = i->left;
+					else if (this->_compare(entry, *i->content) == false)
+						i = i->right;
+				}
+				return (NULL);
 			}
 
 			/*	Clean allocations	*/
@@ -369,6 +330,119 @@ namespace ft
 				return ;
 			}
 
+			/*	Deletions	*/
+			void	delete_sheet(node *n)
+			{
+				clean(n->left);
+				clean(n->right);
+				n->left = NULL;
+				n->right = NULL;
+				this->_al.destroy(n->content);
+				n->is_red = false;
+				n->is_null = true;
+			}
+
+			void	transfer_node(node *n1, node *n2, bool is_left)
+			{
+				if (child_of_who(n1) == 0)
+					n1->parent->left = n2;
+				else if (child_of_who(n2) == 1)
+					n1->parent->right = n2;
+				n2->parent = n1->parent;
+				is_left ? clean(n1->right) : clean(n1->left);
+				clean(n1);
+				return ;
+			}
+
+			void	move_node(node *n, node *to_delete)
+			{
+				clean(n->left);
+				n->right->parent = n->parent;
+				if (child_of_who(n) == 0)
+					n->parent->left = n->right;
+				else if (child_of_who(n) == 1)
+					n->parent->right = n->right;
+				n->parent = to_delete->parent;
+				n->left = to_delete->left;
+				n->right = to_delete->right;
+				n->is_red = to_delete->is_red; // pas sur 
+				n->is_null = to_delete->is_null;
+				return ;
+			}
+
+			void	recolor(node *n)
+			{
+				while (n != this->_begin->left)
+				{
+					if (n->is_red == true)
+					{
+						n->is_red = false;
+						return ;
+					}
+					else
+					{
+						if (child_of_who(n) == 0)
+						{
+							if (n->parent->right->is_red == true)
+							{
+								n->parent->right->is_red = false;
+								n->parent->is_red = true;
+								rotate_left(n->parent);
+							}
+							else if (n->parent->right->is_red == false && child_black(n->parent->right))
+							{
+								n->parent->right->is_red = true;
+								n = n->parent;
+							}
+							else if (n->parent->right->is_red == false && n->parent->right->left->is_red == true)
+							{
+								n->parent->right->is_red = true;
+								n->parent->right->left->is_red = false;
+								rotate_right(n->parent->right);
+							}
+							else if (n->parent->right->is_red == false && n->parent->right->right->is_red == true)
+							{
+								n->parent->right->is_red = n->parent->is_red;
+								n->parent->right->right->is_red = false;
+								n->parent->is_red = false;
+								rotate_left(n->parent);
+								return ;
+							}
+						}
+						else if (child_of_who(n) == 1)
+						{
+							if (n->parent->left->is_red == true)
+							{
+								n->parent->left->is_red = false;
+								n->parent->is_red = true;
+								rotate_right(n->parent);
+							}
+							else if (n->parent->left->is_red == false && child_black(n->parent->left))
+							{
+								n->parent->left->is_red = true;
+								n = n->parent;
+							}
+							else if (n->parent->left->is_red == false && n->parent->left->left->is_red == true)
+							{
+								n->parent->left->is_red = true;
+								n->parent->left->left->is_red = false;
+								rotate_left(n->parent->left);
+							}
+							else if (n->parent->left->is_red == false && n->parent->left->right->is_red == true)
+							{
+								n->parent->left->is_red = n->parent->is_red;
+								n->parent->left->right->is_red = false;
+								n->parent->is_red = false;
+								rotate_right(n->parent);
+								return ;
+							}
+						}
+					}
+				}
+				this->_begin->left->is_red = false;
+				return ;
+			}
+
 			/*	Rotations	*/
 			void	rotate_left(node *n)
 			{
@@ -426,8 +500,15 @@ namespace ft
 			bool	has_one_child(node *n)
 			{
 				if (n->left->is_null == true && n->right->is_null == false)
-					return (true)
+					return (true);
 				if (n->left->is_null == false && n->right->is_null == true)
+					return (true);
+				return (false);
+			}
+
+			bool	child_black(node *n)
+			{
+				if (n->left->is_red == false && n->right->is_red == false)
 					return (true);
 				return (false);
 			}
