@@ -58,7 +58,7 @@ namespace ft
 
 	};
 
-	template < class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
+	template < class T, class Compare, class Allocator = std::allocator<T> >
 	class	RBTree
 	{
 		public:
@@ -82,7 +82,7 @@ namespace ft
 			typedef typename ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 
 			/*	CONSTRUCTORS	*/
-			RBTree(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _al(alloc), _al_node(node_allocator()), _compare(comp)
+			RBTree(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _al(alloc), _al_node(node_allocator()), _compare(comp), _size(0)
 			{ 
 				this->_begin = this->_al_node.allocate(1);
 				this->_al_node.construct(this->_begin, node());
@@ -105,21 +105,51 @@ namespace ft
 			}
 
 			/*	PUBLIC FUNCTIONS	*/
-			void	insert(value_type entry)
+			node	*find(value_type entry)
 			{
+				node	*i = this->_begin->left;
+				
+				while (i->is_null != true)
+				{
+					if (this->_compare(entry.first, i->content->first) == false && this->_compare(i->content->first, entry.first) == false)
+						return (i);
+					else if (this->_compare(entry.first, i->content->first) == true)
+						i = i->left;
+					else if (this->_compare(entry.first, i->content->first) == false)
+						i = i->right;
+				}
+				return (NULL);
+			}
+
+			ft::pair<iterator, bool> insert(value_type entry)
+			{
+				ft::pair<iterator, bool>	pair_return;
+
 				if (this->_begin->left->is_null == true)
 				{
 					this->_begin->left->insert(entry);
 					this->_begin->left->is_red = false;
 					this->_begin->left->is_null = false;
+					this->_size++;
+					pair_return.first = this->_begin->left;
+					pair_return.second = true;
+					return (pair_return);
 				} 
 				else
 				{
 					node	*new_one = search(entry);
-					if (new_one == NULL)
-						return ;
+					
+					pair_return.first = new_one;
+					if (new_one->content->first == entry.first)
+					{
+						pair_return.second = false;
+						return (pair_return);
+					}
+					pair_return.second = true;
 					assign_node(new_one, entry);
 					check_insert(new_one);
+					this->_size++;
+					return (pair_return);
 				}
 			}
 
@@ -156,6 +186,7 @@ namespace ft
 						close_value->is_red == false ? was_black = close_value->right : was_black = NULL;
 						move_node(close_value, to_delete);
 					}
+					this->_size--;
 					if (was_black)
 						recolor(was_black);
 				}
@@ -170,6 +201,9 @@ namespace ft
 			}
 			node	*end() { return (this->_begin); }
 
+			bool		empty() const { return (this->_size == 0); }
+			size_type	size() const { return (this->_size); }
+
 		private:
 			/*	PRIVATE VAR	*/
 			node			*_begin;
@@ -177,6 +211,7 @@ namespace ft
 			allocator_type	_al;
 			node_allocator	_al_node;
 			key_compare		_compare;
+			size_type		_size;
 
 			/*	PRIVATE FUNCTIONS	*/
 			/*	For iterators	*/
@@ -221,30 +256,14 @@ namespace ft
 				
 				while (i->is_null != true)
 				{
-					if (this->_compare(entry, *i->content) == false && this->_compare(*i->content, entry) == false)
-						return (NULL);
-					else if (this->_compare(entry, *i->content) == true)
+					if (this->_compare(entry.first, i->content->first) == false && this->_compare(i->content->first, entry.first) == false)
+						return (i);
+					else if (this->_compare(entry.first, i->content->first) == true)
 						i = i->left;
-					else if (this->_compare(entry, *i->content) == false)
+					else if (this->_compare(entry.first, i->content->first) == false)
 						i = i->right;
 				}
 				return (i);
-			}
-
-			node	*find(value_type entry)
-			{
-				node	*i = this->_begin->left;
-				
-				while (i->is_null != true)
-				{
-					if (this->_compare(entry, *i->content) == false && this->_compare(*i->content, entry) == false)
-						return (i);
-					else if (this->_compare(entry, *i->content) == true)
-						i = i->left;
-					else if (this->_compare(entry, *i->content) == false)
-						i = i->right;
-				}
-				return (NULL);
 			}
 
 			/*	Clean allocations	*/

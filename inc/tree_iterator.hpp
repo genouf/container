@@ -40,10 +40,10 @@ namespace ft
 		bool operator!=(iterator const &rhs) const { return (this->_it != rhs._it); }
 
 		/*	DEREFERENCE	*/
-		// Value & operator*() const {return (*this->_it->content); }
-		// Value *operator->() const { return (this->_it->content); }
-		reference operator*() const {return (*this->_it); }
-		pointer operator->() const { return (this->_it); }
+		Value & operator*() const {return (*this->_it->content); }
+		Value *operator->() const { return (this->_it->content); }
+		// reference operator*() const {return (*this->_it); }
+		// pointer operator->() const { return (this->_it); }
 
 		/*	PREFIX INCREMENT	*/
 		iterator & operator++()
