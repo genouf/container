@@ -58,7 +58,7 @@ namespace ft
 
 	};
 
-	template < class T, class Compare, class Allocator = std::allocator<T> >
+	template < class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
 	class	RBTree
 	{
 		public:
@@ -157,7 +157,14 @@ namespace ft
 			{
 				node	*to_delete = find(entry);
 
-				if (to_delete)
+				if (to_delete == this->_begin->left && this->_size == 1)
+				{
+					this->_al.destroy(to_delete->content);
+					to_delete->is_null = true;
+					to_delete->is_red = false;
+					this->_size--;
+				}
+				else if (to_delete)
 				{
 					node	*was_black;
 
@@ -194,13 +201,22 @@ namespace ft
 				return (0);
 			}
 
-			node	*begin () const
+			iterator	begin ()
 			{
 				if (this->_begin->left->is_null == true)
 					return (this->_begin);
 				return (tree_min(this->_begin->left)); 
 			}
-			node	*end() const { return (this->_begin); }
+
+			const_iterator	begin () const
+			{
+				if (this->_begin->left->is_null == true)
+					return (this->_begin);
+				return (tree_min(this->_begin->left)); 
+			}
+
+			iterator	end() { return (this->_begin); }
+			const_iterator	end() const { return (this->_begin); }
 
 			bool		empty() const { return (this->_size == 0); }
 			size_type	size() const { return (this->_size); }
@@ -277,10 +293,17 @@ namespace ft
 
 			void	clean_tree(node *n)
 			{
+				// std::cout << "JE SUIS" << n->content->first << std::endl;
 				if (n->left)
+				{
+					// std::cout << "JE CLEAN GAUCHE " << n->left->content->first << std::endl;
 					clean_tree(n->left);
+				}
 				if (n->right)
+				{
+					// std::cout << "JE CLEAN DROITE " << n->right->content->first << std::endl;
 					clean_tree(n->right);
+				}
 				clean(n);
 				return ;
 			}

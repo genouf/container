@@ -53,6 +53,7 @@ namespace ft
 				{
 					this->_al = x._al;
 					this->_compare = x._compare;
+					this->erase(this->begin(), this->end());
 					this->insert(x.begin(), x.end());
 				}
 				return (*this);
@@ -115,7 +116,7 @@ namespace ft
 
 			void	erase(iterator position)
 			{
-				this->_tree.pop(ft::make_pair(*position, mapped_type()));
+				this->_tree.pop(ft::make_pair(position->first, mapped_type()));
 				return ;
 			}
 
@@ -124,7 +125,7 @@ namespace ft
 			void	erase(iterator first, iterator last)
 			{
 				for ( ; first != last; ++first)
-					this->_tree.pop(ft::make_pair(*first, mapped_type()));
+					this->_tree.pop(ft::make_pair(first->first, mapped_type()));
 				return ;
 			}
 

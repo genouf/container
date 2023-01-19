@@ -1,6 +1,7 @@
 #include <iostream>
 #include <map>
 
+#include "utility.hpp"
 #include "../inc/rb_tree.hpp"
 #include "../inc/tree_iterator.hpp"
 
@@ -98,41 +99,17 @@ int	main(void)
 		std::cout << std::endl << "=====================================" << std::endl;
 		ft::RBTree<ft::pair<int, std::string> >	tree;
 
-		tree.insert(ft::make_pair<int, std::string>(38, "OK"));
-		tree.insert(ft::make_pair<int, std::string>(2, "OK"));
-		tree.insert(ft::make_pair<int, std::string>(45, "OK"));
-		tree.insert(ft::make_pair<int, std::string>(40, "OK"));
-		tree.insert(ft::make_pair<int, std::string>(50, "OK"));
-		tree.insert(ft::make_pair<int, std::string>(39, "OK"));
+		tree.insert(ft::make_pair<int, std::string>(2, "xd"));
+		tree.insert(ft::make_pair<int, std::string>(6, "lol"));
+		tree.insert(ft::make_pair<int, std::string>(32, "mdr"));
+		tree.insert(ft::make_pair<int, std::string>(12, ""));
+		tree.insert(ft::make_pair<int, std::string>(64, "allezkylian"));
 
-		tree.pop(ft::make_pair<int, std::string>(39, "OK"));
+		// tree.pop(ft::make_pair<int, std::string>(39, "OK"));
 		for (ft::RBTree<ft::pair<int, std::string> >::iterator	it = tree.begin(); it != tree.end(); ++it)
 			std::cout << "VALUE IS " << it->content->first << " AND PARENT IS " << it->parent->content->first << " AND COLOR IS " << it->is_red << std::endl;
 		std::cout << std::endl;
 
-		tree.pop(ft::make_pair<int, std::string>(40, "OK"));
-		for (ft::RBTree<ft::pair<int, std::string> >::iterator	it = tree.begin(); it != tree.end(); ++it)
-			std::cout << "VALUE IS " << it->content->first << " AND PARENT IS " << it->parent->content->first << " AND COLOR IS " << it->is_red << std::endl;
-		std::cout << std::endl;
-
-		tree.pop(ft::make_pair<int, std::string>(45, "OK"));
-		for (ft::RBTree<ft::pair<int, std::string> >::iterator	it = tree.begin(); it != tree.end(); ++it)
-			std::cout << "VALUE IS " << it->content->first << " AND PARENT IS " << it->parent->content->first << " AND COLOR IS " << it->is_red << std::endl;
-		std::cout << std::endl;
-
-		tree.pop(ft::make_pair<int, std::string>(50, "OK"));
-		for (ft::RBTree<ft::pair<int, std::string> >::iterator	it = tree.begin(); it != tree.end(); ++it)
-			std::cout << "VALUE IS " << it->content->first << " AND PARENT IS " << it->parent->content->first << " AND COLOR IS " << it->is_red << std::endl;
-		std::cout << std::endl;
-
-		tree.pop(ft::make_pair<int, std::string>(38, "OK"));
-		for (ft::RBTree<ft::pair<int, std::string> >::iterator	it = tree.begin(); it != tree.end(); ++it)
-			std::cout << "VALUE IS " << it->content->first << " AND PARENT IS " << it->parent->content->first << " AND COLOR IS " << it->is_red << std::endl;
-		std::cout << std::endl;
-
-		tree.pop(ft::make_pair<int, std::string>(2, "OK"));
-		for (ft::RBTree<ft::pair<int, std::string> >::iterator	it = tree.begin(); it != tree.end(); ++it)
-			std::cout << "VALUE IS " << it->content->first << " AND PARENT IS " << it->parent->content->first << " AND COLOR IS " << it->is_red << std::endl;
-	}
+}
 	return (0);
 }
