@@ -30,20 +30,19 @@ namespace ft
 			typedef std::size_t 																			size_type;
 
 			/*	CONSTRUCTORS	*/
-			explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _compare(comp), _al(alloc) { return ; }
+			explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _compare(comp), _al(alloc), _tree() { return ; }
 
 			template <class InputIterator>
-			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _compare(comp), _al(alloc)
+			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _compare(comp), _al(alloc), _tree()
 			{
 				for ( ; first != last; ++first)
 					this->_tree.insert(*first);
 				return ;
 			}
 
-			map (const map& x) : _compare(x._compare), _al(x._al)
+			map (const map& x) : _compare(x._compare), _al(x._al), _tree()
 			{
-				for (iterator it = x.begin(); it != x.end(); ++it)
-					this->_tree.insert(*it);
+				this->insert(x.begin(), x.end());
 				return ;
 			}
 
@@ -52,8 +51,9 @@ namespace ft
 			{
 				if (this != &x)
 				{
-					for (iterator it = x.begin(); it != x.end(); ++it)
-						this->_tree.insert(*it);
+					this->_al = x._al;
+					this->_compare = x._compare;
+					this->insert(x.begin(), x.end());
 				}
 				return (*this);
 			}
@@ -67,6 +67,12 @@ namespace ft
 			iterator		end() { return (this->_tree.end()); }
 			const_iterator	end() const { return (this->_tree.end()); }
 
+			reverse_iterator rbegin() { return (reverse_iterator(this->_tree.end())); }
+			reverse_iterator rbegin() const { return (reverse_iterator(this->_tree.end())); }
+
+			reverse_iterator rend() { return (reverse_iterator(this->_tree.begin())); }
+			reverse_iterator rend() const { return (reverse_iterator(this->_tree.begin())); }
+
 			/*	CAPACITY	*/
 			bool	empty() const { return (this->_tree.empty()); }
 
@@ -75,16 +81,16 @@ namespace ft
 			size_type	max_size() const { return (this->_al.max_size()); }
 
 			/*	ELEMENT ACCESS	*/
-			mapped_type& operator[] (const key_type& k) { return (*(this->_tree.insert(ft::make_pair(k, mapped_type())).first)); }
+			mapped_type& operator[] (const key_type& k) { return ((this->_tree.insert(ft::make_pair(k, mapped_type())).first)->second); }
 
-			mapped_type& at(const key_type& k) 
-			{
-				iterator	it = this->_tree.find(ft::make_pair(k, mapped_type()));
+			// mapped_type& at(const key_type& k) 
+			// {
+			// 	iterator	it(this->_tree.find(ft::make_pair(k, mapped_type())));
 
-				if (it == NULL)
-					throw std::out_of_range("map out of range");
-				return (it->second);
-			}
+			// 	if (it == NULL)
+			// 		throw std::out_of_range("map out of range");
+			// 	return (it->second);
+			// }
 
 			/*	MODIFIERS	*/
 
@@ -107,10 +113,25 @@ namespace ft
 				return ;
 			}
 
+			void	erase(iterator position)
+			{
+				this->_tree.pop(ft::make_pair(*position, mapped_type()));
+				return ;
+			}
+
+			size_type	erase(const key_type& k) { return (this->_tree.pop(ft::make_pair(k, mapped_type()))); }
+
+			void	erase(iterator first, iterator last)
+			{
+				for ( ; first != last; ++first)
+					this->_tree.pop(ft::make_pair(*first, mapped_type()));
+				return ;
+			}
+
 		private:
-			RBTree<value_type, key_compare, allocator_type>	_tree;
 			key_compare										_compare;
 			allocator_type									_al;
+			RBTree<value_type, key_compare, allocator_type>	_tree;
 
 	};
 }

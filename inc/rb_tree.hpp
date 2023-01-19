@@ -153,7 +153,7 @@ namespace ft
 				}
 			}
 
-			void	pop(value_type entry)
+			size_type	pop(value_type entry)
 			{
 				node	*to_delete = find(entry);
 
@@ -189,17 +189,18 @@ namespace ft
 					this->_size--;
 					if (was_black)
 						recolor(was_black);
+					return (1);
 				}
-				return ;
+				return (0);
 			}
 
-			node	*begin()
+			node	*begin () const
 			{
 				if (this->_begin->left->is_null == true)
 					return (this->_begin);
 				return (tree_min(this->_begin->left)); 
 			}
-			node	*end() { return (this->_begin); }
+			node	*end() const { return (this->_begin); }
 
 			bool		empty() const { return (this->_size == 0); }
 			size_type	size() const { return (this->_size); }
