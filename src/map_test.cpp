@@ -72,7 +72,7 @@ int	main(void)
 		for (std::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
 			std::cout << it->first << " | " << it->second << std::endl;
 		std::cout << std::endl << "====== ERASE BY KEY ======" << std::endl;
-		std::cout << mp.erase(6) << std::endl;
+		std::cout << mp.erase(12) << std::endl;
 		std::cout << mp.erase(3) << std::endl;
 		std::cout << "====== MAP IS ======" << std::endl;
 		for (std::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
@@ -115,7 +115,7 @@ int	main(void)
 		std::cout << std::endl << "====== COPY CONSTRUCTOR =======" << std::endl;
 		mp_cp.erase(6);
 		std::cout << std::endl << "====== ASSIGNATION MP = MP_CP =======" << std::endl;
-		// mp = mp_cp;
+		mp = mp_cp;
 		std::cout << "====== MAP IS ======" << std::endl;
 		for (ft::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
 			std::cout << it->first << " | " << it->second << std::endl;
@@ -149,20 +149,16 @@ int	main(void)
 		for (ft::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
 			std::cout << it->first << " | " << it->second << std::endl;
 		std::cout << std::endl << "====== ERASE BY KEY ======" << std::endl;
-		std::cout << mp.erase(6) << std::endl;
+		std::cout << mp.erase(12) << std::endl;
 		std::cout << mp.erase(3) << std::endl;
 		std::cout << "====== MAP IS ======" << std::endl;
 		for (ft::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
 			std::cout << it->first << " | " << it->second << std::endl;
 		std::cout << std::endl << "====== ERASE BY RANGE ======" << std::endl;
-		ft::map<int, std::string>::iterator it = mp.begin();
-		// ++it;
-		// ++it;
-		// mp.erase(mp.begin(), it);
-		// std::cout << "====== MAP IS ======" << std::endl;
-		// for (ft::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
-		// 	std::cout << it->first << " | " << it->second << std::endl;;
-
+		mp.erase(mp.begin(), mp.end());
+		std::cout << "====== MAP IS ======" << std::endl;
+		for (ft::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
+			std::cout << it->first << " | " << it->second << std::endl;;
 	}
 	return (0);
 }

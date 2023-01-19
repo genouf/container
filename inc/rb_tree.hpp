@@ -406,10 +406,17 @@ namespace ft
 				else if (child_of_who(n) == 1)
 					n->parent->right = n->right;
 				n->parent = to_delete->parent;
+				if (child_of_who(to_delete) == 0)
+					to_delete->parent->left = n;
+				else if (child_of_who(to_delete) == 1)
+					to_delete->parent->right = n;
 				n->left = to_delete->left;
 				n->right = to_delete->right;
+				to_delete->left->parent = n;
+				to_delete->right->parent = n;
 				n->is_red = to_delete->is_red; // pas sur 
 				n->is_null = to_delete->is_null;
+				clean(to_delete);
 				return ;
 			}
 

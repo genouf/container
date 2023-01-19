@@ -124,8 +124,8 @@ namespace ft
 
 			void	erase(iterator first, iterator last)
 			{
-				for ( ; first != last; ++first)
-					this->_tree.pop(ft::make_pair(first->first, mapped_type()));
+				while (first != last)
+					this->_tree.pop(ft::make_pair((first++)->first, mapped_type()));
 				return ;
 			}
 
