@@ -148,6 +148,14 @@ namespace ft
 	// MAKE PAIR
 	template <class T1, class T2>
 	pair<T1, T2> make_pair(T1 x, T2 y) { return (pair<T1, T2>(x, y)); }
+
+	/*	BINARY FUNCTION	*/
+	template <class Arg1, class Arg2, class Result>
+	struct binary_function {
+		typedef Arg1 first_argument_type;
+		typedef Arg2 second_argument_type;
+		typedef Result result_type;
+	};
 }
 
 #endif

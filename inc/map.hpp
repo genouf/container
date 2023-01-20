@@ -16,7 +16,6 @@ namespace ft
 			typedef T																						mapped_type;
 			typedef pair<const key_type, mapped_type> 														value_type;
 			typedef Compare																					key_compare;
-			// typename typedef ft::map::value_comp															value_compare;
 			typedef Allocator																				allocator_type;
 			typedef typename allocator_type::reference														reference;
 			typedef typename allocator_type::const_reference												const_reference;
@@ -28,6 +27,18 @@ namespace ft
 			typedef typename ft::reverse_iterator<const_iterator>											const_reverse_iterator;
 			typedef std::ptrdiff_t 																			difference_type;
 			typedef std::size_t 																			size_type;
+
+			class value_compare : ft::binary_function<value_type, value_type, bool>
+			{
+				friend class map<key_type, mapped_type, key_compare, Allocator>;
+
+				protected:
+					Compare comp;
+					value_compare (Compare c) : comp(c) {}
+
+				public:
+					bool operator() (const value_type& x, const value_type& y) const { return (comp(x.first, y.first)); }
+			};
 
 			/*	CONSTRUCTORS	*/
 			explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _compare(comp), _al(alloc), _tree() { return ; }
@@ -53,7 +64,7 @@ namespace ft
 				{
 					this->_al = x._al;
 					this->_compare = x._compare;
-					this->erase(this->begin(), this->end());
+					this->clear();
 					this->insert(x.begin(), x.end());
 				}
 				return (*this);
@@ -128,6 +139,33 @@ namespace ft
 					this->_tree.pop(ft::make_pair((first++)->first, mapped_type()));
 				return ;
 			}
+
+			void	swap(map &x)
+			{
+				ft::map<Key, T, Compare, Allocator>	tmp(x);
+
+				x = *this;
+				*this = tmp;
+				return ;
+			}
+
+			void	clear()
+			{
+				this->erase(this->begin(), this->end());
+				return ;
+			}
+
+			/*	OBSERVERS	*/
+			key_compare key_comp() const { return (this->_compare); }
+
+			value_compare value_comp() const { return (key_compare()); }
+
+			/*	OPERATIONS	*/
+			iterator	find(const key_type& k) { return (this->_tree.find(ft::make_pair(k, mapped_type()))); }
+
+			const_iterator	find(const key_type& k) const { return (this->_tree.find(ft::make_pair(k, mapped_type()))); }
+
+			size_type	count(const key_type& k) const { return (this->_tree.count(ft::make_pair(k, mapped_type()))); }
 
 		private:
 			key_compare										_compare;

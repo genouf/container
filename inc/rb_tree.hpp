@@ -105,7 +105,7 @@ namespace ft
 			}
 
 			/*	PUBLIC FUNCTIONS	*/
-			node	*find(value_type entry)
+			node	*find(value_type entry) const
 			{
 				node	*i = this->_begin->left;
 				
@@ -118,7 +118,15 @@ namespace ft
 					else if (this->_compare(entry.first, i->content->first) == false)
 						i = i->right;
 				}
-				return (NULL);
+				return (this->_begin);
+			}
+
+			size_type	count(value_type entry) const
+			{
+				if (this->find(entry) != this->_begin)
+					return (1);
+				else
+					return (0);
 			}
 
 			ft::pair<iterator, bool> insert(value_type entry)
@@ -164,7 +172,7 @@ namespace ft
 					to_delete->is_red = false;
 					this->_size--;
 				}
-				else if (to_delete)
+				else if (to_delete != this->_begin)
 				{
 					node	*was_black;
 

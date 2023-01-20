@@ -77,11 +77,49 @@ int	main(void)
 		std::cout << "====== MAP IS ======" << std::endl;
 		for (std::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
 			std::cout << it->first << " | " << it->second << std::endl;
+		std::cout << "SIZE ? : " << mp.size() << std::endl;
 		std::cout << std::endl << "====== ERASE BY RANGE ======" << std::endl;
 		mp.erase(mp.begin(), mp.end());
 		std::cout << "====== MAP IS ======" << std::endl;
 		for (std::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
 			std::cout << it->first << " | " << it->second << std::endl;
+		std::cout << "SIZE ? : " << mp.size() << std::endl;
+
+		std::cout << std::endl << "====== CLEAR ======" << std::endl;
+		mp.insert(std::make_pair<int, std::string>(1, "Ballet Girl"));
+		mp.insert(std::make_pair<int, std::string>(2, "Merci les bleus"));
+		mp.insert(std::make_pair<int, std::string>(4, "Bloody Mary"));
+		std::cout << "====== MAP IS ======" << std::endl;
+		for (std::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
+			std::cout << it->first << " | " << it->second << std::endl;
+		std::cout << "SIZE ? : " << mp.size() << std::endl;
+		mp.clear();
+		std::cout << "====== MAP IS ======" << std::endl;
+		for (std::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
+			std::cout << it->first << " | " << it->second << std::endl;
+		std::cout << "SIZE ? : " << mp.size() << std::endl;
+
+		std::cout << std::endl << "====== SWAP ======" << std::endl;
+		std::cout << "====== MAP IS ======" << std::endl;
+		for (std::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
+			std::cout << it->first << " | " << it->second << std::endl;
+		std::cout << "====== MAP_RANGE IS ======" << std::endl;
+		for (std::map<int, std::string>::iterator it = mp_range.begin(); it != mp_range.end(); ++it)
+			std::cout << it->first << " | " << it->second << std::endl;
+		mp.swap(mp_range);
+		std::cout << "====== MAP IS ======" << std::endl;
+		for (std::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
+			std::cout << it->first << " | " << it->second << std::endl;
+		std::cout << "====== MAP_RANGE IS ======" << std::endl;
+		for (std::map<int, std::string>::iterator it = mp_range.begin(); it != mp_range.end(); ++it)
+			std::cout << it->first << " | " << it->second << std::endl;
+
+		std::cout << std::endl << "====== FIND ======" << std::endl;
+		std::cout << mp.find(2)->second << std::endl;
+		// std::cout << mp.find(100)->second << std::endl;
+		std::cout << std::endl << "====== COUNT ======" << std::endl;
+		std::cout << mp.count(2) << std::endl;
+		std::cout << mp.count(100) << std::endl;
 	}
 	{
 		std::cout << std::endl << std::endl << "============ FT ============" << std::endl;
@@ -154,11 +192,49 @@ int	main(void)
 		std::cout << "====== MAP IS ======" << std::endl;
 		for (ft::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
 			std::cout << it->first << " | " << it->second << std::endl;
+		std::cout << "SIZE ? : " << mp.size() << std::endl;
 		std::cout << std::endl << "====== ERASE BY RANGE ======" << std::endl;
 		mp.erase(mp.begin(), mp.end());
 		std::cout << "====== MAP IS ======" << std::endl;
 		for (ft::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
 			std::cout << it->first << " | " << it->second << std::endl;;
+		std::cout << "SIZE ? : " << mp.size() << std::endl;
+
+		std::cout << std::endl << "====== CLEAR ======" << std::endl;
+		mp.insert(ft::make_pair<int, std::string>(1, "Ballet Girl"));
+		mp.insert(ft::make_pair<int, std::string>(2, "Merci les bleus"));
+		mp.insert(ft::make_pair<int, std::string>(4, "Bloody Mary"));
+		std::cout << "====== MAP IS ======" << std::endl;
+		for (ft::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
+			std::cout << it->first << " | " << it->second << std::endl;
+		std::cout << "SIZE ? : " << mp.size() << std::endl;
+		mp.clear();
+		std::cout << "====== MAP IS ======" << std::endl;
+		for (ft::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
+			std::cout << it->first << " | " << it->second << std::endl;
+		std::cout << "SIZE ? : " << mp.size() << std::endl;
+
+		std::cout << std::endl << "====== SWAP ======" << std::endl;
+		std::cout << "====== MAP IS ======" << std::endl;
+		for (ft::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
+			std::cout << it->first << " | " << it->second << std::endl;
+		std::cout << "====== MAP_RANGE IS ======" << std::endl;
+		for (ft::map<int, std::string>::iterator it = mp_range.begin(); it != mp_range.end(); ++it)
+			std::cout << it->first << " | " << it->second << std::endl;
+		mp.swap(mp_range);
+		std::cout << "====== MAP IS ======" << std::endl;
+		for (ft::map<int, std::string>::iterator it = mp.begin(); it != mp.end(); ++it)
+			std::cout << it->first << " | " << it->second << std::endl;
+		std::cout << "====== MAP_RANGE IS ======" << std::endl;
+		for (ft::map<int, std::string>::iterator it = mp_range.begin(); it != mp_range.end(); ++it)
+			std::cout << it->first << " | " << it->second << std::endl;
+
+		std::cout << std::endl << "====== FIND ======" << std::endl;
+		std::cout << mp.find(2)->second << std::endl;
+		// std::cout << mp.find(100)->second << std::endl;
+		std::cout << std::endl << "====== COUNT ======" << std::endl;
+		std::cout << mp.count(2) << std::endl;
+		std::cout << mp.count(100) << std::endl;
 	}
 	return (0);
 }
