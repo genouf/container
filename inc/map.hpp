@@ -167,6 +167,61 @@ namespace ft
 
 			size_type	count(const key_type& k) const { return (this->_tree.count(ft::make_pair(k, mapped_type()))); }
 
+			iterator	lower_bound(const key_type& k)
+			{
+				iterator last = this->end();
+
+				for (iterator first = this->begin(); first != last; ++first)
+				{
+					 if (!this->_compare(first->first, k))
+					 	return (first);
+				}
+				return (last);
+			}
+
+			const_iterator	lower_bound(const key_type& k) const
+			{
+				const_iterator last = this->end();
+
+				for (const_iterator first = this->begin(); first != last; ++first)
+				{
+					 if (!this->_compare(first->first, k))
+					 	return (first);
+				}
+				return (last);
+			}
+
+			iterator	upper_bound(const key_type& k)
+			{
+				iterator last = this->end();
+
+				for (iterator first = begin(); first != last; ++first)
+				{
+					if (this->_compare(k, first->first))
+						return (first);
+				}
+				return (last);
+			}
+
+			const_iterator	upper_bound(const key_type& k) const
+			{
+				const_iterator last = this->end();
+
+				for (const_iterator first = begin(); first != last; ++first)
+				{
+					if (this->_compare(k, first->first))
+						return (first);
+				}
+				return (last);
+			}
+
+			pair<iterator, iterator> equal_range(const key_type& k) { return (ft::make_pair(lower_bound(k), upper_bound(k))); }
+
+			pair<const_iterator, const_iterator> equal_range(const key_type& k) const { return (ft::make_pair(this->lower_bound(k), this->upper_bound(k))); }
+
+			/*	ALLOCATOR	*/
+			allocator_type	get_allocator() const { return (this->_al); }
+
 		private:
 			key_compare										_compare;
 			allocator_type									_al;

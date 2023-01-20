@@ -120,6 +120,12 @@ int	main(void)
 		std::cout << std::endl << "====== COUNT ======" << std::endl;
 		std::cout << mp.count(2) << std::endl;
 		std::cout << mp.count(100) << std::endl;
+
+		std::cout << std::endl << "====== LOWER BOUND ======" << std::endl;
+		std::cout << mp.lower_bound(6)->first << " | " << mp.lower_bound(6)->second << std::endl;
+		std::cout << mp.upper_bound(12)->first << " | " << mp.lower_bound(6)->second << std::endl;
+		std::cout << mp.upper_bound(64)->first << " | " << mp.lower_bound(6)->second << std::endl;
+		std::cout << mp.equal_range(6).first->first << " | " << mp.equal_range(6).second->first << std::endl;
 	}
 	{
 		std::cout << std::endl << std::endl << "============ FT ============" << std::endl;
@@ -235,6 +241,12 @@ int	main(void)
 		std::cout << std::endl << "====== COUNT ======" << std::endl;
 		std::cout << mp.count(2) << std::endl;
 		std::cout << mp.count(100) << std::endl;
+
+		std::cout << std::endl << "====== LOWER BOUND ======" << std::endl;
+		std::cout << mp.lower_bound(6)->first << " | " << mp.lower_bound(6)->second << std::endl;
+		std::cout << mp.upper_bound(12)->first << " | " << mp.lower_bound(6)->second << std::endl;
+		std::cout << mp.upper_bound(64)->first << " | " << mp.lower_bound(6)->second << std::endl;
+		std::cout << mp.equal_range(6).first->first << " | " << mp.equal_range(6).second->first << std::endl;
 	}
 	return (0);
 }
