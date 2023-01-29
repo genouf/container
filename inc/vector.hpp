@@ -43,13 +43,16 @@ namespace ft
 		template <class InputIterator>
 		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename enable_if<!is_integral<InputIterator>::value>::type* = 0) : _size(0), _capacity(0), _container(0), _al(alloc)
 		{
-			size_type	 size = last - first;
+			size_type	size = std::distance(first, last);
 
 			this->_size = size;
 			this->_capacity = this->_size;
 			this->_container = this->_al.allocate(this->_capacity);
 			for (size_type i = 0; i < this->_size; i++)
-				this->_al.construct(this->_container + i, *(first + i));
+			{
+				this->_al.construct(this->_container + i, *first);
+				first++;
+			}
 			return ;
 		}
 
@@ -94,6 +97,8 @@ namespace ft
 
 		reference operator[] (size_type n) { return (this->_container[n]); }
 
+		const_reference operator[] (size_type n) const { return (this->_container[n]); }
+		
 		/*	FUNCTIONS	*/
 
 		/*	ITERATORS :	*/
@@ -102,6 +107,14 @@ namespace ft
 
 		iterator		end() { return (this->_container + this->_size); }
 		const_iterator	end() const { return (this->_container + this->_size); }
+
+		reverse_iterator rbegin() { return (reverse_iterator(this->end())); }
+
+		const_reverse_iterator rbegin() const { return (reverse_iterator(this->end())); }
+
+		reverse_iterator rend() { return (reverse_iterator(this->begin())); }
+
+		const_reverse_iterator rend() const { return (reverse_iterator(this->begin())); }
 
 		/*	CAPACITY :	*/
 		size_type	size() const { return (this->_size); }
@@ -157,6 +170,13 @@ namespace ft
 			return (*(this->_container + n));
 		}
 
+		const_reference at(size_type n) const
+		{
+			if (n > this->_size - 1)
+				throw std::out_of_range("vector out of range");
+			return (*(this->_container + n));
+		}
+
 		reference front() { return (*this->begin()); }
 		const_reference front() const { return (*this->begin()); }
 
@@ -167,9 +187,9 @@ namespace ft
 
 		// range version
 		template <class InputIterator>
-		void	assign(InputIterator first, InputIterator last)
+		void	assign(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type* = 0)
 		{
-			const size_type	range = last - first;
+			size_type	range = std::distance(first, last);
 			size_type		i = 0;
 
 			this->clear();
@@ -268,7 +288,7 @@ namespace ft
 		template <class InputIterator>
 		void	insert(iterator position, InputIterator first, InputIterator last)
 		{
-			size_type	size = last - first;
+			size_type	size = std::distance(first, last);
 			size_type	index = position - this->begin();
 			size_type	tmp = this->_capacity;
 
