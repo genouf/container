@@ -105,6 +105,13 @@ namespace ft
 			}
 
 			/*	PUBLIC FUNCTIONS	*/
+			size_type	max_size() const 
+			{
+				std::allocator< node_pointer> tmp;
+
+				return (tmp.max_size()); 
+			}
+
 			node	*find(value_type entry) const
 			{
 				node	*i = this->_begin->left;

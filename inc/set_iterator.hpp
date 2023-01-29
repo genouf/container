@@ -1,5 +1,5 @@
-#ifndef TREE_ITERATOR_HPP
-#define TREE_ITERATOR_HPP
+#ifndef SET_ITERATOR_HPP
+#define SET_ITERATOR_HPP
 
 #include <iostream>
 #include "iterator_traits.hpp"
@@ -7,9 +7,9 @@
 namespace ft
 {
 	template < class T, class Value >
-	struct tree_iterator
+	struct set_iterator
 	{
-		typedef tree_iterator	iterator;
+		typedef set_iterator	iterator;
 
 		/*	MEMBER TYPES	*/
 		typedef typename ft::iterator_traits<T*>::value_type		value_type;
@@ -19,11 +19,11 @@ namespace ft
 		typedef typename std::bidirectional_iterator_tag			iterator_category;
 
 		/*	CONSTRUCTORS	*/
-		tree_iterator() : _it(NULL) { return ; }
+		set_iterator() : _it(NULL) { return ; }
 
-		tree_iterator(pointer src) : _it(src) { return ; }
+		set_iterator(pointer src) : _it(src) { return ; }
 
-		tree_iterator(iterator const & copy) : _it(copy._it) { return ; }
+		set_iterator(iterator const & copy) : _it(copy._it) { return ; }
 
 		iterator & operator=(iterator const &rhs)
 		{
@@ -33,15 +33,15 @@ namespace ft
 		}
 
 		/*	DESTRUCTOR	*/
-		virtual ~tree_iterator() { return ; }
+		virtual ~set_iterator() { return ; }
 
 		/*	COMPARISON	*/
 		bool operator==(iterator const &rhs) const { return (this->_it == rhs._it); }
 		bool operator!=(iterator const &rhs) const { return (this->_it != rhs._it); }
 
 		/*	DEREFERENCE	*/
-		Value & operator*() const {return (*this->_it->content); }
-		Value *operator->() const { return (this->_it->content); }
+		Value & operator*() const {return (*this->_it->content->first); }
+		Value *operator->() const { return (this->_it->content->first); }
 
 		/*	PREFIX INCREMENT	*/
 		iterator & operator++()

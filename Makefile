@@ -3,7 +3,7 @@ NAME = ft_containers
 SRC_PATH = src/
 OBJ_PATH = obj/
 
-SRC_NAME =	set_test.cpp				\
+SRC_NAME =	map_test.cpp				\
 
 OBJ_NAME = $(SRC_NAME:.cpp=.o)
 

@@ -14,7 +14,7 @@ namespace ft
 			/*	MEMBER TYPES	*/
 			typedef T																						key_type;
 			typedef T																						value_type;
-			typedef pair<const key_type, void>																svalue_type;
+			typedef pair<const key_type, int>																svalue_type;
 			typedef	Compare																					key_compare;
 			typedef Compare																					value_compare;
 			typedef typename Allocator::template rebind< svalue_type >::other								allocator_type;
@@ -87,13 +87,13 @@ namespace ft
 			/*	MODIFIERS	*/
 
 			// single element
-			ft::pair<iterator, bool> insert(const value_type& val) { return (this->_tree.insert(val)); }
+			ft::pair<iterator, bool> insert(const value_type& val) { return (this->_tree.insert(ft::make_pair(val, 0))); }
 
 			// hint
 			iterator insert(iterator position, const value_type& val)
 			{
 				(void)position;
-				return (this->_tree.insert(val).first);
+				return (this->_tree.insert(ft::make_pair(val, 0)).first);
 			}
 
 			// range
@@ -111,7 +111,7 @@ namespace ft
 				return ;
 			}
 
-			size_type	erase(const key_type& k) { return (this->_tree.pop(ft::make_pair(k))); }
+			size_type	erase(const key_type& k) { return (this->_tree.pop(ft::make_pair(k, 0))); }
 
 			void	erase(iterator first, iterator last)
 			{
@@ -141,11 +141,11 @@ namespace ft
 			value_compare value_comp() const { return (this->_compare); }
 
 			/*	OPERATIONS	*/
-			iterator	find(const key_type& k) { return (this->_tree.find(ft::make_pair(k))); }
+			iterator	find(const key_type& k) { return (this->_tree.find(ft::make_pair(k, 0))); }
 
-			const_iterator	find(const key_type& k) const { return (this->_tree.find(ft::make_pair(k))); }
+			const_iterator	find(const key_type& k) const { return (this->_tree.find(ft::make_pair(k, 0))); }
 
-			size_type	count(const key_type& k) const { return (this->_tree.count(ft::make_pair(k))); }
+			size_type	count(const key_type& k) const { return (this->_tree.count(ft::make_pair(k, 0))); }
 
 			iterator	lower_bound(const key_type& k)
 			{

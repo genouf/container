@@ -93,7 +93,7 @@ namespace ft
 
 			size_type	size() const { return (this->_tree.size()); }
 
-			size_type	max_size() const { return (this->_al.max_size()); }
+			size_type	max_size() const { return (this->_tree.max_size()); }
 
 			/*	ELEMENT ACCESS	*/
 			mapped_type& operator[] (const key_type& k) { return ((this->_tree.insert(ft::make_pair(k, mapped_type())).first)->second); }

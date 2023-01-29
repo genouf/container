@@ -133,6 +133,7 @@ int	main(void)
 		
 		
 		ft::vector<int> mv1;
+		std::cout << "MAX_SIZE IS " << mv1.max_size() << std::endl;
 		mv1.push_back(0);
 		mv1.push_back(1);
 		mv1.push_back(2);
@@ -145,8 +146,10 @@ int	main(void)
 		// print_mvector(mv1);
 		std::cout << "FRONT ELEMENT IS " << mv1.front() << std::endl;
 		std::cout << "BACK ELEMENT IS " << mv1.back() << std::endl;
+		
 
 		std::vector<int> v1;
+		std::cout << "MAX_SIZE IS " << v1.max_size() << std::endl;
 		v1.push_back(0);
 		v1.push_back(1);
 		v1.push_back(2);
