@@ -164,26 +164,13 @@ int	main(void)
 		std::cout << "FRONT ELEMENT IS " << v1.front() << std::endl;
 		std::cout << "BACK ELEMENT IS " << v1.back() << std::endl;
 	}
+	{
+		ft::vector<int> my_vecto;
+		std::vector<int> vecto;
+
+		vecto.insert(vecto.end(), 2);
+		my_vecto.insert(my_vecto.end(), 2);
+	}
 
 	return (0);
 }
-
-	// v.push_back(6);
-	// v.push_back(7);
-	// v.push_back(12);
-	// std::cout << "CAPACITY IS " << v.capacity() << std::endl;
-	// std::cout << "SIZE IS " << v.capacity() << std::endl;
-	// for (std::vector<int>::iterator it = v.begin(); it != v.end(); ++it)
-	// 	std::cout << *it << std::endl;
-	// std::cout << std::endl;
-	// std::cout << "====== SUITE ======" << std::endl;
-	// it1 = v.begin();
-	// it2 = it1 + 2;
-	// std::cout << "it1 = " << *it1 << std::endl;
-	// std::cout << "it2 = " << *it2 << std::endl;
-	// std::cout << std::endl << std::endl;
-	// std::vector<int> v2(it1, it2);
-	// for (std::vector<int>::iterator i = v2.begin(); i != v2.end(); i++)
-	// 	std::cout << *i << std::endl;
-	// std::cout << "SIZE IS " << v.size() << std::endl;
-	// std::cout << "MAX_SIZE IS " << v.max_size() << std::endl;

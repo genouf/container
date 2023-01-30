@@ -109,11 +109,9 @@ namespace ft
 		const_iterator	end() const { return (this->_container + this->_size); }
 
 		reverse_iterator rbegin() { return (reverse_iterator(this->end())); }
-
 		const_reverse_iterator rbegin() const { return (reverse_iterator(this->end())); }
 
 		reverse_iterator rend() { return (reverse_iterator(this->begin())); }
-
 		const_reverse_iterator rend() const { return (reverse_iterator(this->begin())); }
 
 		/*	CAPACITY :	*/
@@ -242,7 +240,12 @@ namespace ft
 			size_type	index = position - this->begin();
 
 			if (this->_size == this->_capacity)
-				reserve(this->_capacity * 2);
+			{
+				if (this->_capacity == 0)
+					reserve(1);
+				else
+					reserve(this->_capacity * 2);
+			}
 			this->_size++;
 			for (size_type i = this->_size - 1; i != index; i--)
 			{
@@ -286,7 +289,7 @@ namespace ft
 
 		// range version
 		template <class InputIterator>
-		void	insert(iterator position, InputIterator first, InputIterator last)
+		void	insert(iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type* = 0)
 		{
 			size_type	size = std::distance(first, last);
 			size_type	index = position - this->begin();
@@ -377,6 +380,7 @@ namespace ft
 				x._capacity = tmp._capacity;
 				x._size = tmp._size;
 				x._container = tmp._container;
+				tmp._container = NULL;
 			}
 			return ;
 		}

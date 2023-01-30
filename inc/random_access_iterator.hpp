@@ -106,19 +106,44 @@ namespace ft
 
 				return (tmp -= n);
 			}
-			friend iterator & operator+(int n, iterator it) { return (it += n); }
-			friend iterator & operator-(int n, iterator it) { return (it -= n); }
+
+			friend iterator operator+(int n, iterator const &it) { return (it + n); }
+			friend iterator operator-(int n, iterator const &it) { return (it - n); }
+
+			operator random_access_iterator<const T> () { return (random_access_iterator<const T>(this->_it)); }
 
 			/*	DEREFERENCE OPERATOR	*/
 			reference operator[](int n) const { return (this->_it[n]); }
 
 			/*	DISTANCE OPERATOR	*/
-			difference_type	operator-(iterator const &other) const { return (this->_it - other._it); }
+			friend difference_type	operator-(iterator const &lhs, iterator const &rhs) { return (lhs.base() - rhs.base()); }
+			friend difference_type	operator+(iterator const &lhs, iterator const &rhs) { return (lhs.base() + rhs.base()); }
+
+			pointer	base() const { return (this->_it); }
 
 		private:
 			/*	MEMBER VAR	*/
 			pointer _it;
 	};
+
+	/*	OVERLOAD COMPARISON	*/
+	template <class ItLeft, class ItRight>
+	bool operator==(ItLeft const &lhs, ItRight const &rhs) { return (lhs.base() == rhs.base()); }
+
+	template <class ItLeft, class ItRight>
+	bool operator!=(ItLeft const &lhs, ItRight const &rhs) { return (lhs.base() != rhs.base()); }
+
+	template <class ItLeft, class ItRight>
+	bool operator>(ItLeft const &lhs, ItRight const &rhs) { return (lhs.base() > rhs.base()); }
+
+	template <class ItLeft, class ItRight>
+	bool operator<(ItLeft const &lhs, ItRight const &rhs) { return (lhs.base() < rhs.base()); }
+
+	template <class ItLeft, class ItRight>
+	bool operator>=(ItLeft const &lhs, ItRight const &rhs) { return (lhs.base() >= rhs.base()); }
+
+	template <class ItLeft, class ItRight>
+	bool operator<=(ItLeft const &lhs, ItRight const &rhs) { return (lhs.base() <= rhs.base()); }
 }
 
 #endif
