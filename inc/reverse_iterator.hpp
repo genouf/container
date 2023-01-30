@@ -91,7 +91,7 @@ namespace ft
 		}
 
 		// dereference
-		pointer operator->() const { return (&(*(this->_base_it - 1))); }
+		pointer operator->() const { return (&(*(--this->_base_it))); }
 
 		// dereference with offset
 		reference operator[] (difference_type n) const { return (this->_base_it[-n-1]); }

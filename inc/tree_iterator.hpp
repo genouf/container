@@ -39,8 +39,10 @@ namespace ft
 		bool operator==(iterator const &rhs) const { return (this->_it == rhs._it); }
 		bool operator!=(iterator const &rhs) const { return (this->_it != rhs._it); }
 
+		operator tree_iterator<const T, const Value> () { return (tree_iterator<const T, const Value>(this->_it)); }
+
 		/*	DEREFERENCE	*/
-		Value & operator*() const {return (*this->_it->content); }
+		Value & operator*() const {return (*(this->_it->content)); }
 		Value *operator->() const { return (this->_it->content); }
 
 		/*	PREFIX INCREMENT	*/
@@ -88,6 +90,8 @@ namespace ft
 			--(*this);
 			return (tmp);
 		}
+
+		pointer	base() const { return (this->_it); }
 
 		private:
 			/*	MEMBER VAR	*/
