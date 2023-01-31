@@ -76,8 +76,8 @@ namespace ft
 			typedef typename allocator_type::const_pointer							const_pointer;
 			typedef std::ptrdiff_t													difference_Type;
 			typedef std::size_t														size_type;
-			typedef typename ft::tree_iterator<node, value_type>					iterator;
-			typedef typename ft::tree_iterator<const node, const value_type>		const_iterator;
+			typedef typename ft::tree_iterator<value_type, node>					iterator;
+			typedef typename ft::tree_iterator<const value_type, const node>		const_iterator;
 			typedef typename ft::reverse_iterator<iterator>							reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 
@@ -204,12 +204,11 @@ namespace ft
 					else
 					{
 						node *close_value = tree_min(to_delete->right);
-
 						close_value->is_red == false ? was_black = close_value->right : was_black = NULL;
 						move_node(close_value, to_delete);
 					}
 					this->_size--;
-					if (was_black)
+					if (was_black && was_black->is_null != true)
 						recolor(was_black);
 					return (1);
 				}
@@ -235,6 +234,21 @@ namespace ft
 
 			bool		empty() const { return (this->_size == 0); }
 			size_type	size() const { return (this->_size); }
+
+			void	swap(RBTree &x)
+			{
+				node *tmp1 = this->_begin;
+				node *tmp2 = this->_root;
+				size_type	tmp_s = this->_size;
+
+				this->_begin = x._begin;
+				this->_root = x._root;
+				this->_size = x._size;
+				x._begin = tmp1;
+				x._root = tmp2;
+				x._size = tmp_s;
+				return ;
+			}
 
 		private:
 			/*	PRIVATE VAR	*/
@@ -308,17 +322,10 @@ namespace ft
 
 			void	clean_tree(node *n)
 			{
-				// std::cout << "JE SUIS" << n->content->first << std::endl;
 				if (n->left)
-				{
-					// std::cout << "JE CLEAN GAUCHE " << n->left->content->first << std::endl;
 					clean_tree(n->left);
-				}
 				if (n->right)
-				{
-					// std::cout << "JE CLEAN DROITE " << n->right->content->first << std::endl;
 					clean_tree(n->right);
-				}
 				clean(n);
 				return ;
 			}
@@ -404,7 +411,7 @@ namespace ft
 			{
 				if (child_of_who(n1) == 0)
 					n1->parent->left = n2;
-				else if (child_of_who(n2) == 1)
+				else if (child_of_who(n1) == 1)
 					n1->parent->right = n2;
 				n2->parent = n1->parent;
 				is_left ? clean(n1->right) : clean(n1->left);
@@ -415,21 +422,25 @@ namespace ft
 			void	move_node(node *n, node *to_delete)
 			{
 				clean(n->left);
-				n->right->parent = n->parent;
+				// Accrochage de l'element droit
+				node *right_node = n->right;
+				right_node->parent = n->parent;
 				if (child_of_who(n) == 0)
-					n->parent->left = n->right;
+					n->parent->left = right_node;
 				else if (child_of_who(n) == 1)
-					n->parent->right = n->right;
+					n->parent->right = right_node;
+
+				//Accrochage de n
 				n->parent = to_delete->parent;
+				n->left = to_delete->left;
+				n->right = to_delete->right;
 				if (child_of_who(to_delete) == 0)
 					to_delete->parent->left = n;
 				else if (child_of_who(to_delete) == 1)
 					to_delete->parent->right = n;
-				n->left = to_delete->left;
-				n->right = to_delete->right;
-				to_delete->left->parent = n;
-				to_delete->right->parent = n;
-				n->is_red = to_delete->is_red; // pas sur 
+				n->left->parent = n;
+				n->right->parent = n;
+				n->is_red = to_delete->is_red;
 				n->is_null = to_delete->is_null;
 				clean(to_delete);
 				return ;
@@ -573,7 +584,7 @@ namespace ft
 
 			bool	child_black(node *n)
 			{
-				if (n->left->is_red == false && n->right->is_red == false)
+				if (n->left && n->left->is_red == false && n->right && n->right->is_red == false)
 					return (true);
 				return (false);
 			}

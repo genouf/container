@@ -6,7 +6,7 @@
 
 namespace ft
 {
-	template < class T, class Value >
+	template <class T, class Node>
 	struct tree_iterator
 	{
 		typedef tree_iterator	iterator;
@@ -17,19 +17,20 @@ namespace ft
 		typedef typename ft::iterator_traits<T*>::pointer			pointer;
 		typedef typename ft::iterator_traits<T*>::reference			reference;
 		typedef typename std::bidirectional_iterator_tag			iterator_category;
+		typedef Node *												node_pointer;
 
 		/*	CONSTRUCTORS	*/
 		tree_iterator() : _it(NULL) { return ; }
 
-		tree_iterator(pointer src) : _it(src) { return ; }
+		tree_iterator(node_pointer src) : _it(src) { return ; }
 
-		tree_iterator(iterator const & copy) : _it(copy._it) { return ; }
+		tree_iterator(iterator const & copy) : _it(copy.base()) { return ; }
 
-		iterator & operator=(iterator const &rhs)
+		reference operator=(iterator const &rhs)
 		{
 			if (this != &rhs)
 				this->_it = rhs._it;
-			return (*this);
+			return (*this->_it->content);
 		}
 
 		/*	DESTRUCTOR	*/
@@ -39,20 +40,20 @@ namespace ft
 		bool operator==(iterator const &rhs) const { return (this->_it == rhs._it); }
 		bool operator!=(iterator const &rhs) const { return (this->_it != rhs._it); }
 
-		operator tree_iterator<const T, const Value> () { return (tree_iterator<const T, const Value>(this->_it)); }
+		operator tree_iterator<const T, const Node> () { return (tree_iterator<const T, const Node>(this->_it)); }
 
 		/*	DEREFERENCE	*/
-		Value & operator*() const {return (*(this->_it->content)); }
-		Value *operator->() const { return (this->_it->content); }
+		reference 	operator*() const {return (*(this->_it->content)); }
+		pointer		operator->() const { return (this->_it->content); }
 
 		/*	PREFIX INCREMENT	*/
-		iterator & operator++()
+		tree_iterator & operator++()
 		{
 			if (this->_it->right && this->_it->right->is_null == false)
 				this->_it = tree_min(this->_it->right);
 			else
 			{
-				pointer tmp = this->_it;
+				node_pointer tmp = this->_it;
 				while (tmp->parent->is_null != true && tmp != tmp->parent->left)
 					tmp = tmp->parent;
 				this->_it = tmp->parent;
@@ -60,13 +61,13 @@ namespace ft
 			return (*this);
 		}
 
-		iterator & operator--()
+		tree_iterator & operator--()
 		{
 			if (this->_it->left && this->_it->left->is_null == false)
 				this->_it = tree_max(this->_it->left);
 			else
 			{
-				pointer tmp = this->_it;
+				node_pointer tmp = this->_it;
 				while (tmp != tmp->parent->right)
 					tmp = tmp->parent;
 				this->_it = tmp->parent;
@@ -91,25 +92,25 @@ namespace ft
 			return (tmp);
 		}
 
-		pointer	base() const { return (this->_it); }
+		node_pointer	base() const { return (this->_it); }
 
 		private:
 			/*	MEMBER VAR	*/
-			pointer _it;
+			node_pointer _it;
 
 			/*	FUNCTIONS	*/
-			pointer	tree_min(pointer node) const
+			node_pointer	tree_min(node_pointer node) const
 			{
-				pointer tmp = node;
+				node_pointer tmp = node;
 			
 				while (tmp->left != NULL && tmp->left->is_null == false)
 					tmp = tmp->left;
 				return (tmp);
 			}
 
-			pointer	tree_max(pointer node) const
+			node_pointer	tree_max(node_pointer node) const
 			{
-				pointer tmp = node;
+				node_pointer tmp = node;
 			
 				while (tmp->right != NULL && tmp->right->is_null == false)
 					tmp = tmp->right;

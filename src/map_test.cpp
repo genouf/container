@@ -248,6 +248,10 @@ int	main(void)
 		std::cout << mp.upper_bound(12)->first << " | " << mp.lower_bound(6)->second << std::endl;
 		std::cout << mp.upper_bound(64)->first << " | " << mp.lower_bound(6)->second << std::endl;
 		std::cout << mp.equal_range(6).first->first << " | " << mp.equal_range(6).second->first << std::endl;
+		
+		// std::cout << "OTHER REVERSE_ITERATOR TESTS ON FT" << std::endl;
+		// ft::map<int, std::string>::reverse_iterator	rite = mp.rend();
+		// rite->
 	}
 	return (0);
 }

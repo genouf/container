@@ -83,9 +83,9 @@ namespace ft
 			const_iterator	end() const { return (this->_tree.end()); }
 
 			reverse_iterator rbegin() { return (reverse_iterator(this->_tree.end())); }
-			const_reverse_iterator rbegin() const { return (reverse_iterator(this->_tree.end())); }
+			const_reverse_iterator rbegin() const { return (const_reverse_iterator(this->_tree.end())); }
 
-			reverse_iterator rend() { return (const_reverse_iterator(this->_tree.begin())); }
+			reverse_iterator rend() { return (reverse_iterator(this->_tree.begin())); }
 			const_reverse_iterator rend() const { return (const_reverse_iterator(this->_tree.begin())); }
 
 			/*	CAPACITY	*/
@@ -136,11 +136,8 @@ namespace ft
 
 			void	swap(map &x)
 			{
-				ft::map<Key, T, Compare, Allocator>	tmp(x);
-
-				x = *this;
-				*this = tmp;
-				return ;
+				this->_tree.swap(x._tree);
+				return ; 
 			}
 
 			void	clear()
