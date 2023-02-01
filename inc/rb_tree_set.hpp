@@ -76,7 +76,7 @@ namespace ft
 			typedef typename allocator_type::const_pointer							const_pointer;
 			typedef std::ptrdiff_t													difference_Type;
 			typedef std::size_t														size_type;
-			typedef typename ft::tree_iterator<value_type, node>					iterator;
+			typedef typename ft::tree_iterator<const value_type, const node>		iterator;
 			typedef typename ft::tree_iterator<const value_type, const node>		const_iterator;
 			typedef typename ft::reverse_iterator<iterator>							reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>					const_reverse_iterator;
