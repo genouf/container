@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rb_tree_set.hpp                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: genouf <genouf@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/02 10:05:05 by genouf            #+#    #+#             */
+/*   Updated: 2023/02/02 10:05:06 by genouf           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef RB_TREE_SET_HPP
 # define RB_TREE_SET_HPP
 
@@ -5,59 +17,10 @@
 #include "utility.hpp"
 #include "tree_iterator.hpp"
 #include "reverse_iterator.hpp"
+#include "rb_tree.hpp"
 
 namespace ft
 {
-	template < class Value, class Allocator = std::allocator<Value> >
-	struct Node
-	{
-		typedef	Allocator														allocator_type;
-
-		/*	CONSTRUCTORS	*/
-		Node(const allocator_type& alloc = allocator_type()) : parent(NULL), left(NULL), right(NULL), is_red(false), is_null(true), _al(alloc)
-		{
-			this->content = this->_al.allocate(1);
-			this->_al.construct(this->content, Value());
-			return ; 
-		}
-
-		Node(const Node &src) : parent(src.parent), left(src.left), right(src.right), is_red(src.is_red), is_null(src.is_null), _al(src._al)
-		{
-			this->content = this->_al.allocate(1);
-			this->_al.construct(this->content, *src.content);
-			return ;
-		}
-
-		/*	DESTRUCTOR	*/
-		virtual ~Node()
-		{
-			this->_al.destroy(this->content);
-			this->_al.deallocate(this->content, 1);	
-			return ; 
-		}
-
-		/*	FUNCTIONS	*/
-		void	insert(Value entry)
-		{
-			this->_al.destroy(this->content);
-			this->_al.construct(this->content, entry);
-			return ;
-		}
-
-		/*	PUBLIC VAR	*/
-		Value 			*content;
-		Node			*parent;
-		Node			*left;
-		Node			*right;
-		bool			is_red;
-		bool			is_null;
-
-		private:
-			/*	PRIVATE VAR	*/
-			allocator_type 	_al;
-
-	};
-
 	template < class T, class Compare, class Allocator = std::allocator<T> >
 	class	RBTreeSet
 	{

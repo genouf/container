@@ -5,7 +5,7 @@ SRC_PATH = src/
 OBJ_PATH = obj/
 
 SRC_NAME =	std_test.cpp				
-SRC_NAME2 =	test_mandatory.cpp					
+SRC_NAME2 =	ft_test.cpp					
 
 OBJ_NAME = $(SRC_NAME:.cpp=.o)
 OBJ_NAME2 = $(SRC_NAME2:.cpp=.o)
